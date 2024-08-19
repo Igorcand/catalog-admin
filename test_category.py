@@ -23,7 +23,7 @@ class TestCategory:
     def test_cretaed_category_with_defult_values(self):
         category = Category(name="Filme")
         assert category.name == "Filme"
-        assert category.desciption == ""
+        assert category.description == ""
         assert category.is_active is True
     
     def test_category_is_created_with_provided_values(self):
@@ -31,7 +31,7 @@ class TestCategory:
         category = Category(id = id, name="Filme", description="Filmes em geral", is_active=False)
         assert category.id == id
         assert category.name == "Filme"
-        assert category.desciption == "Filmes em geral"
+        assert category.description == "Filmes em geral"
         assert category.is_active is False
     
     def test_cannot_create_category_with_empty_name(self):
