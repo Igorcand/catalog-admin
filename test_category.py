@@ -65,7 +65,7 @@ class TestUpdateCategory:
         with pytest.raises(ValueError, match="name cannot be empty"):
             category.update_category(name="", description="Series em geral")
 
-class TestActivate():
+class TestActivate:
     def test_activate_inactive_category(self):
         category = Category(name="Filme", description="Filmes em geral", is_active=False)
         category.activate()
@@ -78,7 +78,7 @@ class TestActivate():
 
         assert category.is_active is True
 
-class TestDeactivate():
+class TestDeactivate:
     def test_desactivate_inactive_category(self):
         category = Category(name="Filme", description="Filmes em geral", is_active=False)
         category.deactivate()
@@ -90,3 +90,22 @@ class TestDeactivate():
         category.deactivate()
 
         assert category.is_active is False
+
+class TestEquality:
+    def test_when_categories_have_name_id_they_are_equal(self):
+        common_id = uuid4()
+        category_1 = Category(id=common_id, name="Filme", description="Filmes em geral")
+        category_2 = Category(id=common_id, name="Filme", description="Filmes em geral")
+
+        assert category_1 == category_2
+    def test_equality_different_classes(self):
+        class Dummy: pass 
+
+        common_id = uuid4()
+        category = Category(id=common_id, name="Filme", description="Filmes em geral")
+
+        dummy = Dummy()
+        dummy.id = common_id
+
+        assert category != dummy
+

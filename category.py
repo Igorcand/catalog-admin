@@ -21,6 +21,12 @@ class Category:
     
     def __repr__(self) -> str:
         return f"Category {self.name} ({self.id})"
+
+    def __eq__(self, value: object) -> bool:
+        if not isinstance(value, Category):
+            return False
+        
+        return self.id == value.id
     
     def update_category(self, name, description):
         self.name = name 
