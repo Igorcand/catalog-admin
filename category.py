@@ -7,8 +7,14 @@ class Category:
         self.desciption = description
         self.is_active = is_active
 
+        self.validate()
+    
+    def validate(self):
         if len(self.name) >255:
-            raise ValueError("name must have less than 256 characteres")
+            raise ValueError("name cannot be longer than 255")
+
+        if not self.name:
+            raise ValueError("name cannot be empty")
     
     def __str__(self):
         return f"{self.name} - {self.desciption} ({self.is_active})"
@@ -20,5 +26,14 @@ class Category:
         self.name = name 
         self.description = description 
 
-        if len(self.name) >255:
-            raise ValueError("name must have less than 256 characteres")
+        self.validate()
+    
+    def activate(self):
+        self.is_active = True
+
+        self.validate()
+    
+    def deactivate(self):
+        self.is_active = False
+
+        self.validate()
