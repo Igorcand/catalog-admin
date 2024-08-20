@@ -18,6 +18,7 @@ class TestCreateCateory:
         response = use_case.execute(request)
 
         assert response is not None
+        assert isinstance(response, CreateCategoryResponse)
         assert isinstance(response.id, UUID)
         assert mock_repository.save.called is True
     
