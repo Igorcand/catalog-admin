@@ -1,5 +1,5 @@
-from unittest.mock import create_autospec, MagicMock
-from uuid import UUID, uuid4
+from unittest.mock import create_autospec
+from uuid import uuid4
 from src.core.category.application.use_cases.get_category import GetCategory, GetCategoryRequest, GetCategoryResponse
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
 from src.core.category.application.category_repository import CategoryRepository
@@ -28,17 +28,15 @@ class TestGetCateory:
 
         )
     
-    def test_return_category_not_exists(self):
-
+    def test_when_category_not_found_then_raise_exception(self):
         mock_repository = create_autospec(CategoryRepository)
-        mock_repository.get_by_id.side_effect = CategoryNotFound()
+        mock_repository.get_by_id.return_value = None
 
         use_case = GetCategory(repository=mock_repository)
+        request = GetCategoryRequest(id=uuid4())
 
-        id = uuid4()
-        with pytest.raises(CategoryNotFound) as exc_info:
-            response = use_case.execute(GetCategoryRequest(id=id))
+        with pytest.raises(CategoryNotFound):
+            use_case.execute(request)
 
-        assert exc_info.type is CategoryNotFound
 
     
