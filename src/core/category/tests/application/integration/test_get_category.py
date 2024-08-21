@@ -1,8 +1,6 @@
-from uuid import UUID, uuid4
+from uuid import uuid4
 from src.core.category.application.use_cases.get_category import GetCategory, GetCategoryRequest, GetCategoryResponse
 from src.core.category.domain.category import Category
-
-from src.core.category.application.use_cases.exceptions import InvalidCategoryData
 from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
 import pytest
@@ -43,7 +41,3 @@ class TestGetCategory:
 
         with pytest.raises(CategoryNotFound) as exc:
             use_case.execute(request)
-
-        
-
-

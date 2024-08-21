@@ -1,7 +1,6 @@
-from uuid import UUID, uuid4
+from uuid import uuid4
 from src.core.category.application.use_cases.update_category import UpdateCategory, UpdateCategoryRequest
 from src.core.category.domain.category import Category
-
 from src.core.category.application.use_cases.exceptions import InvalidCategoryData
 from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
@@ -29,7 +28,6 @@ class TestUpdateCategory:
 
         assert updated_category.name == "Serie"
         assert updated_category.description == "Categoria para series"
-
     
     def test_when_try_update_category_does_not_exist_then_raise_exception(self):
         category = Category(
@@ -65,7 +63,3 @@ class TestUpdateCategory:
             request = UpdateCategoryRequest(category.id, name= "")
             use_case.execute(request)
         
-
-        
-
-
