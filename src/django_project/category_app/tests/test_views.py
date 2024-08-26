@@ -18,24 +18,26 @@ def category_repository() -> DjangoORMCategoryRepository:
 
 
 @pytest.mark.django_db
-class TestCategoryAPI():
+class TestListAPI():
 
     def test_list_categories(self,category_movie: Category,category_repository: DjangoORMCategoryRepository) -> None:
         category_repository.save(category_movie)
         url = "/api/categories/"
         response = APIClient().get(url)
 
-        expected_data = [
-            {
-                "id": str(category_movie.id),
-                "name": category_movie.name,
-                "description": category_movie.description,
-                "is_active": category_movie.is_active,
-            }
-        ]
+        expected_data = {
+            "data": [
+                {
+                    "id": str(category_movie.id),
+                    "name": category_movie.name,
+                    "description": category_movie.description,
+                    "is_active": category_movie.is_active,
+                }
+            ]
+        }
         assert response.status_code == HTTP_200_OK
         assert response.data == expected_data
-        assert len(response.data) == 1
+        assert len(response.data['data']) == 1
 
 @pytest.mark.django_db
 class TestRetrieveAPI():
@@ -51,10 +53,12 @@ class TestRetrieveAPI():
         response = APIClient().get(url)
 
         expected_data = {
+            "data": {
                 "id": str(category_movie.id),
                 "name": category_movie.name,
                 "description": category_movie.description,
                 "is_active": category_movie.is_active,
+            }
             
         }
         assert response.status_code == HTTP_200_OK
