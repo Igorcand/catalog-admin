@@ -1,14 +1,14 @@
 from uuid import UUID
 from src.core.category.domain.category import Category
 from core.category.domain.category_repository import CategoryRepository
-from django_project.category_app.models import Category as CategoryModel
+from django_project.category_app.models import Category as CategoryORM
 
 class DjangoORMCategoryRepository(CategoryRepository):
-    def __init__(self, category_model: CategoryModel = CategoryModel) -> None:
-        self.category_model = category_model
+    def __init__(self, model: CategoryORM | None = None) -> None:
+        self.model = model or CategoryORM
     
     def save(self, category: Category) -> None:
-        self.category_model.objects.create(
+        self.model.objects.create(
             id=category.id,
             name=category.name,
             description = category.description,
@@ -17,18 +17,18 @@ class DjangoORMCategoryRepository(CategoryRepository):
     
     def get_by_id(self, id: UUID) -> Category | None:
         try:
-            category = self.category_model.objects.get(id=id)
+            category = self.model.objects.get(id=id)
             return Category(
                 id=category.id,
                 name=category.name,
                 description=category.description,
                 is_active=category.is_active
             )
-        except self.category_model.DoesNotExist:
+        except self.model.DoesNotExist:
             return None
         
     def delete(self, id: UUID) -> None:
-        return self.category_model.objects.filter(id=id).delete()
+        return self.model.objects.filter(id=id).delete()
     
     def list(self) -> list[Category]:
         return [
@@ -38,7 +38,7 @@ class DjangoORMCategoryRepository(CategoryRepository):
                 description=category.description,
                 is_active=category.is_active
             )
-            for category in self.category_model.objects.all()]
+            for category in self.model.objects.all()]
 
     def update(self, category: Category) -> None:
         self.model.objects.filter(pk=category.id).update(
