@@ -152,7 +152,56 @@ class TestUpdateAPI():
         assert updated_category.description == "Documentary description"
         assert updated_category.is_active is True
 
-    def test_when_category_dows_not_exist_then_return_404(self) -> None:
+    def test_when_category_does_not_exist_then_return_404(self) -> None:
+        url = f"/api/categories/{uuid4()}/"
+        response = APIClient().put(
+            url,
+            data={
+                "name": "Documentary",
+                "description": "Documentary description",
+                "is_active": True
+            }
+            )
+
+        assert response.status_code == HTTP_404_NOT_FOUND
+
+@pytest.mark.django_db
+class TestPartialUpdateAPI():
+    def test_when_id_is_invalid_then_return_400(self) -> None:
+        url = f"/api/categories/123523634/" #UUID invalid
+        response = APIClient().patch(
+            url,
+            data={
+                "description": "Movie description"
+            }, format="json"
+            )
+
+        assert response.status_code == HTTP_400_BAD_REQUEST
+
+    def test_when_payload_is_valid_then_update_partial_category_and_return_204(
+            self,
+            category_movie: Category,
+            category_repository: DjangoORMCategoryRepository
+            ) -> None:
+        
+        category_repository.save(category_movie)
+
+        url = f"/api/categories/{category_movie.id}/"
+        response = APIClient().patch(
+            url,
+            data={
+                "name": "Documentary",
+            }
+            )
+
+        assert response.status_code == HTTP_204_NO_CONTENT
+        updated_category = category_repository.get_by_id(category_movie.id)
+
+        assert updated_category.name == "Documentary"
+        assert updated_category.description == "Description"
+        assert updated_category.is_active is True
+
+    def test_when_category_does_not_exist_then_return_404(self) -> None:
         url = f"/api/categories/{uuid4()}/"
         response = APIClient().put(
             url,
