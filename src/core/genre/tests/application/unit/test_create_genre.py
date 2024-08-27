@@ -38,9 +38,7 @@ def mock_empty_category_repository() -> CategoryRepository:
     return repository
 
 
-
-
-class TestCrateGenre:
+class TestCreateGenre:
     def test_when_categories_do_not_exist_then_raise_related_categories_not_found(
             self,
             mock_empty_category_repository,

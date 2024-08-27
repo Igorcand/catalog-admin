@@ -4,7 +4,7 @@ from src.core.genre.domain.genre import Genre
 
 class GenreRepository(ABC):
     @abstractmethod
-    def save(self, category):
+    def save(self, genre):
         raise NotImplementedError
 
     @abstractmethod
