@@ -2,7 +2,6 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NO
 from rest_framework.test import APIClient
 from src.django_project.category_app.repository import DjangoORMCategoryRepository
 from src.django_project.genre_app.repository import DjangoORMGenreRepository
-
 from src.core.category.domain.category import Category
 from src.core.genre.domain.genre import Genre
 
@@ -121,5 +120,24 @@ class TestCreateAPI:
         )
 
 
-
-
+@pytest.mark.django_db
+class TestDeleteAPI:
+    def test_when_genre_does_not_exist_then_raise_404(self):
+        url = f"/api/genres/{uuid4()}/"
+        response = APIClient().delete(url)
+        assert response.status_code == HTTP_404_NOT_FOUND
+    
+    def test_when_pk_is_invalid_then_raise_400(self):
+        url = f"/api/genres/9348561054612806/"
+        response = APIClient().delete(url)
+        assert response.status_code == HTTP_400_BAD_REQUEST
+    
+    def test_delete_genre_from_repository(
+            self,
+            genre_repository: DjangoORMGenreRepository,
+            genre_drama: Genre,):
+        
+        genre_repository.save(genre_drama)
+        url = f"/api/genres/{genre_drama.id}/"
+        response = APIClient().delete(url) 
+        assert response.status_code == HTTP_204_NO_CONTENT
