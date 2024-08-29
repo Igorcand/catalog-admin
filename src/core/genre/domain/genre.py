@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from uuid import UUID, uuid4
+from typing import Set
 
 @dataclass
 class Genre:
@@ -48,4 +49,8 @@ class Genre:
     
     def remove_category(self, category_id: UUID) -> None:
         self.categories.remove(category_id)
+        self.validate()
+    
+    def update_categories(self, category_ids: Set[UUID]) -> None:
+        self.categories = category_ids
         self.validate()
