@@ -1,6 +1,6 @@
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.test import APIClient
-from django_project.category_app.repository import DjangoORMCategoryRepository
+from src.django_project.category_app.repository import DjangoORMCategoryRepository
 from src.core.category.domain.category import Category
 import pytest 
 from uuid import uuid4, UUID
