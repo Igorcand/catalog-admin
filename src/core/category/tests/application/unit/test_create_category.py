@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 from uuid import UUID
 from src.core.category.application.use_cases.create_category import CreateCategory, CreateCategoryRequest, CreateCategoryResponse
 from src.core.category.application.use_cases.exceptions import InvalidCategoryData
-from core.category.domain.category_repository import CategoryRepository
+from src.core.category.domain.category_repository import CategoryRepository
 import pytest
 
 class TestCreateCateory:

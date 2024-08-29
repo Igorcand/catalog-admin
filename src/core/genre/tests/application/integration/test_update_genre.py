@@ -43,6 +43,5 @@ class TestUpdateGenre:
         
         assert updated_genre.name == "Romance"
         assert updated_genre.is_active is False 
-        assert updated_genre
-        .categories == {movie_category.id, documentary_category.id}
+        assert updated_genre.categories == {movie_category.id, documentary_category.id}
 

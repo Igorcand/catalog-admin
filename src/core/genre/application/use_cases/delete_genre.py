@@ -1,7 +1,7 @@
 from uuid import UUID
 from dataclasses import dataclass
-from core.genre.domain.genre_repository import GenreRepository
-from core.genre.application.use_cases.exceptions import GenreNotFound
+from src.core.genre.domain.genre_repository import GenreRepository
+from src.core.genre.application.use_cases.exceptions import GenreNotFound
 
 class DeleteGenre:
     def __init__(self, repository: GenreRepository) -> None:

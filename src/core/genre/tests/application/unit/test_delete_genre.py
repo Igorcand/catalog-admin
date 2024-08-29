@@ -2,7 +2,7 @@ import pytest
 from uuid import uuid4
 from src.core.genre.application.use_cases.delete_genre import DeleteGenre
 from src.core.genre.domain.genre_repository import GenreRepository
-from core.genre.application.use_cases.exceptions import GenreNotFound
+from src.core.genre.application.use_cases.exceptions import GenreNotFound
 from src.core.genre.domain.genre import Genre
 
 

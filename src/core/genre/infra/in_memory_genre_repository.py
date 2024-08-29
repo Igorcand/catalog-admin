@@ -1,6 +1,6 @@
 from uuid import UUID
 from src.core.genre.domain.genre import Genre
-from core.genre.domain.genre_repository import GenreRepository
+from src.core.genre.domain.genre_repository import GenreRepository
 
 class InMemoryGenreRepository(GenreRepository):
     def __init__(self, genres=None) -> None:

@@ -1,6 +1,6 @@
 from uuid import UUID
 from dataclasses import dataclass
-from core.category.domain.category_repository import CategoryRepository
+from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
 
 @dataclass
