@@ -1,5 +1,5 @@
 import pytest 
-from uuid import uuid4, UUID
+from uuid import uuid4
 from src.core.category.domain.category import Category
 from src.core.genre.application.use_cases.update_genre import UpdateGenre
 from src.core.genre.domain.genre_repository import GenreRepository

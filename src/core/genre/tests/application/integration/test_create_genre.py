@@ -2,13 +2,11 @@ import pytest
 from uuid import uuid4, UUID
 from src.core.category.domain.category import Category
 from src.core.genre.application.use_cases.create_genre import CreateGenre
-from src.core.genre.domain.genre_repository import GenreRepository
 from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 from src.core.genre.infra.in_memory_genre_repository import InMemoryGenreRepository
 
-from core.genre.application.use_cases.exceptions import RelatedCategoriesNotFound, InvalidGenre
-from src.core.genre.domain.genre import Genre
+from core.genre.application.use_cases.exceptions import RelatedCategoriesNotFound
 
 
 @pytest.fixture

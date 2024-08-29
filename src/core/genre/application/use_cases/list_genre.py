@@ -1,7 +1,5 @@
 from uuid import UUID
-from dataclasses import dataclass, field
-from core.genre.application.use_cases.exceptions import RelatedCategoriesNotFound, InvalidGenre
-from src.core.genre.domain.genre import Genre
+from dataclasses import dataclass
 from src.core.genre.domain.genre_repository import GenreRepository
 
 @dataclass

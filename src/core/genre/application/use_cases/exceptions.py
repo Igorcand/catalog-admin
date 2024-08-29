@@ -1,5 +1,3 @@
-
-
 class InvalidGenre(Exception):
     pass
 

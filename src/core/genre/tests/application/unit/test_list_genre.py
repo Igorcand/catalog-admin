@@ -1,10 +1,6 @@
-import pytest 
-from uuid import uuid4, UUID
-from src.core.category.domain.category import Category
+from uuid import uuid4
 from src.core.genre.application.use_cases.list_genre import ListGenre, GenreOutput
 from src.core.genre.domain.genre_repository import GenreRepository
-from src.core.category.domain.category_repository import CategoryRepository
-from core.genre.application.use_cases.exceptions import RelatedCategoriesNotFound, InvalidGenre
 from src.core.genre.domain.genre import Genre
 from unittest.mock import create_autospec
 

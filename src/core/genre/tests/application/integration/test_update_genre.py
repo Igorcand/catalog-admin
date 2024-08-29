@@ -1,13 +1,7 @@
 import pytest 
-from uuid import uuid4, UUID
 from src.core.category.domain.category import Category
 from src.core.genre.application.use_cases.update_genre import UpdateGenre
-from src.core.genre.domain.genre_repository import GenreRepository
-from src.core.category.domain.category_repository import CategoryRepository
-from core.genre.application.use_cases.exceptions import RelatedCategoriesNotFound, InvalidGenre, GenreNotFound
 from src.core.genre.domain.genre import Genre
-from unittest.mock import create_autospec
-from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 from src.core.genre.infra.in_memory_genre_repository import InMemoryGenreRepository
 
@@ -49,5 +43,6 @@ class TestUpdateGenre:
         
         assert updated_genre.name == "Romance"
         assert updated_genre.is_active is False 
-        assert updated_genre.categories == {movie_category.id, documentary_category.id}
+        assert updated_genre
+        .categories == {movie_category.id, documentary_category.id}
 

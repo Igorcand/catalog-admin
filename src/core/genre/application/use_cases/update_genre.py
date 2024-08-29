@@ -4,9 +4,6 @@ from core.genre.domain.genre_repository import GenreRepository
 from src.core.category.domain.category_repository import CategoryRepository
 from core.genre.application.use_cases.exceptions import GenreNotFound, InvalidGenre, RelatedCategoriesNotFound
 
-
-
-
 class UpdateGenre:
     def __init__(self, repository: GenreRepository, category_repository: CategoryRepository) -> None:
         self.repository = repository
