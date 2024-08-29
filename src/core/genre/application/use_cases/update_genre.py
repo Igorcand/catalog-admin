@@ -21,10 +21,10 @@ class UpdateGenre:
         if genre is None:
             raise GenreNotFound(f"Genre with {input.id} not found")
         
-        category_ids = {category.id for category in self.category_repository.list()}
-        if not input.categories.issubset(category_ids):
+        categories = {category.id for category in self.category_repository.list()}
+        if not input.categories.issubset(categories):
             raise RelatedCategoriesNotFound(
-                f"Categories not found: {input.categories - category_ids}")
+                f"Categories not found: {input.categories - categories}")
 
         try:
             if input.is_active is True:
