@@ -4,7 +4,7 @@ from src.core.category.domain.category import Category
 from src.core.genre.application.use_cases.delete_genre import DeleteGenre
 from src.core.genre.domain.genre_repository import GenreRepository
 from src.core.category.domain.category_repository import CategoryRepository
-from src.core.genre.application.exceptions import RelatedCategoriesNotFound, InvalidGenre, GenreNotFound
+from core.genre.application.use_cases.exceptions import RelatedCategoriesNotFound, InvalidGenre, GenreNotFound
 from src.core.genre.domain.genre import Genre
 
 

@@ -1,6 +1,6 @@
 from uuid import UUID
 from dataclasses import dataclass, field
-from src.core.genre.application.exceptions import RelatedCategoriesNotFound, InvalidGenre
+from core.genre.application.use_cases.exceptions import RelatedCategoriesNotFound, InvalidGenre
 from src.core.genre.domain.genre import Genre
 
 class CreateGenre:

@@ -1,7 +1,7 @@
 from uuid import UUID
 from dataclasses import dataclass
 from core.genre.domain.genre_repository import GenreRepository
-from src.core.genre.application.exceptions import GenreNotFound
+from core.genre.application.use_cases.exceptions import GenreNotFound
 
 
 
