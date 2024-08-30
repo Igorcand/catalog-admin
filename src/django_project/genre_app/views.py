@@ -6,8 +6,10 @@ from src.core.genre.application.use_cases.list_genre import ListGenre
 from src.core.genre.application.use_cases.create_genre import CreateGenre
 from src.core.genre.application.use_cases.delete_genre import DeleteGenre
 from src.core.genre.application.use_cases.get_genre import GetGenre
+from src.core.genre.application.use_cases.update_genre import UpdateGenre
+
 from src.core.genre.application.use_cases.exceptions import InvalidGenre, RelatedCategoriesNotFound, GenreNotFound
-from src.django_project.genre_app.serializers import ListOutputSerializer, CreateGenreInputSerializer, CreateGenreOutputSerializer, DeleteGenreInputSerializer, RetrieveGenreInputSerializer, RetrieveGenreOutputSerializer
+from src.django_project.genre_app.serializers import ListOutputSerializer, CreateGenreInputSerializer, CreateGenreOutputSerializer, DeleteGenreInputSerializer, RetrieveGenreInputSerializer, RetrieveGenreOutputSerializer, UpdateGenreInputSerializer
 from src.django_project.category_app.repository import DjangoORMCategoryRepository
 from src.django_project.genre_app.repository import DjangoORMGenreRepository
 
@@ -52,9 +54,8 @@ class GenreViewSet(viewsets.ViewSet):
             data=CreateGenreOutputSerializer(instance=output).data
         )
 
-    """
     def update(self,request: Request, pk=None) -> Response:
-        serializer = UpdateCategoryRequestSerializer(
+        serializer = UpdateGenreInputSerializer(
             data={
                 **request.data, 
                 "id":pk
@@ -62,17 +63,19 @@ class GenreViewSet(viewsets.ViewSet):
             )
         serializer.is_valid(raise_exception=True)
 
-        input = UpdateCategoryRequest(**serializer.validated_data)
-        use_case = UpdateCategory(repository=DjangoORMCategoryRepository())
+        input = UpdateGenre.Input(**serializer.validated_data)
+        use_case = UpdateGenre(repository=DjangoORMGenreRepository(), category_repository=DjangoORMCategoryRepository())
         try:
-            use_case.execute(request=input)
-        except CategoryNotFound:
-            return Response(status=HTTP_404_NOT_FOUND)
+            use_case.execute(input=input)
+        except (InvalidGenre, RelatedCategoriesNotFound) as err:
+            return Response(data={"error": str(err)}, status=HTTP_400_BAD_REQUEST)
+        except GenreNotFound as err:
+            return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
 
         return Response(
             status=HTTP_204_NO_CONTENT,
         )
-    """
+    
     def destroy(self,request: Request, pk=None) -> Response:
         serializer = DeleteGenreInputSerializer(data={"id":pk})
         serializer.is_valid(raise_exception=True)
