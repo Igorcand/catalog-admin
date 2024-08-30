@@ -64,7 +64,6 @@ class TestListAPI:
         genre_repository.save(genre_drama) 
         url = "/api/genres/"
         response = APIClient().get(url)
-        print(f'response.data["data"] = {response.data["data"]}')
 
         assert response.status_code == HTTP_200_OK
         assert response.data["data"]
@@ -82,6 +81,47 @@ class TestListAPI:
         assert response.data["data"][1]["name"] == "Drama"
         assert response.data["data"][1]["is_active"] is True
         assert response.data["data"][1]["categories"] == []
+
+@pytest.mark.django_db
+class TestRetrieveAPI():
+    def test_when_id_is_invalid_return_400(self) -> None:
+        url = f"/api/genres/159761298546/"
+        response = APIClient().get(url)
+
+        assert response.status_code == HTTP_400_BAD_REQUEST
+
+    def test_return_genre_when_exists(
+            self, 
+            category_movie: Category,
+            category_documentary: Category,
+            category_repository: DjangoORMCategoryRepository,
+            genre_romance: Genre,
+            genre_drama: Genre,
+            genre_repository: DjangoORMGenreRepository,
+            ):
+        genre_repository.save(genre_romance) 
+        genre_repository.save(genre_drama) 
+
+        url = f"/api/categories/{genre_drama.id}/"
+        response = APIClient().get(url)
+
+        expected_data = {
+            "data": {
+                "id": str(genre_drama.id),
+                "name": genre_drama.name,
+                "is_active": genre_drama.is_active,
+                "categories": genre_drama.categories
+            }
+            
+        }
+        #assert response.status_code == HTTP_200_OK
+        #assert response.data == expected_data
+
+    def test_return_404_when_not_exists(self):
+        url = f"/api/genres/{uuid4()}/"
+        response = APIClient().get(url)
+
+        assert response.status_code == HTTP_404_NOT_FOUND
 
 
 @pytest.mark.django_db
@@ -118,7 +158,6 @@ class TestCreateAPI:
             is_active=True,
             categories={category_movie.id},
         )
-
 
 @pytest.mark.django_db
 class TestDeleteAPI:

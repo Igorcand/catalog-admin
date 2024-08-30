@@ -5,8 +5,9 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NO
 from src.core.genre.application.use_cases.list_genre import ListGenre
 from src.core.genre.application.use_cases.create_genre import CreateGenre
 from src.core.genre.application.use_cases.delete_genre import DeleteGenre
+from src.core.genre.application.use_cases.get_genre import GetGenre
 from src.core.genre.application.use_cases.exceptions import InvalidGenre, RelatedCategoriesNotFound, GenreNotFound
-from src.django_project.genre_app.serializers import ListOutputSerializer, CreateGenreInputSerializer, CreateGenreOutputSerializer, DeleteGenreInputSerializer
+from src.django_project.genre_app.serializers import ListOutputSerializer, CreateGenreInputSerializer, CreateGenreOutputSerializer, DeleteGenreInputSerializer, RetrieveGenreInputSerializer, RetrieveGenreOutputSerializer
 from src.django_project.category_app.repository import DjangoORMCategoryRepository
 from src.django_project.genre_app.repository import DjangoORMGenreRepository
 
@@ -20,20 +21,21 @@ class GenreViewSet(viewsets.ViewSet):
         serializer = ListOutputSerializer(instance=output)
         return Response(status=HTTP_200_OK, data=serializer.data)
     
-    """ def retrieve(self, request: Request, pk=None) -> Response:
-        serializer = RetrieveCategoryRequestSerializer(data={"id":pk})
+    def retrieve(self, request: Request, pk=None) -> Response:
+        serializer = RetrieveGenreInputSerializer(data={"id":pk})
         serializer.is_valid(raise_exception=True)
         
-        use_case = GetCategory(repository=DjangoORMCategoryRepository())
+        input = GetGenre.Input(**serializer.validated_data)
+        use_case = GetGenre(repository=DjangoORMGenreRepository())
         try:
-            result = use_case.execute(request=GetCategoryRequest(id=serializer.validated_data["id"]))
-        except CategoryNotFound:
+            result = use_case.execute(input=input)
+        except GenreNotFound:
             return Response(status=HTTP_404_NOT_FOUND)
 
-        category_output = RetrieveCategoryResponseSerializer(instance=result)
+        genre_output = RetrieveGenreOutputSerializer(instance=result)
 
-        return Response(status=HTTP_200_OK, data=category_output.data)
-    """
+        return Response(status=HTTP_200_OK, data=genre_output.data)
+    
     
     def create(self, request: Request) -> Response:
         serializer = CreateGenreInputSerializer(data=request.data)

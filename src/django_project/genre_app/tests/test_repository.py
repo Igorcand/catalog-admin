@@ -115,3 +115,18 @@ class TestUpdateGenre:
         assert genre_model_uptaded.name == update_genre.name
         assert genre_model_uptaded.is_active == update_genre.is_active
 
+@pytest.mark.django_db
+class TestGetGenre:    
+    def test_get_genre_existing_should_return_success(self):
+        genre = Genre(name="Action")
+        genre_repository = DjangoORMGenreRepository() 
+
+        assert GenreORM.objects.count() == 0
+        genre_repository.save(genre)
+        assert GenreORM.objects.count() == 1
+
+        genre_model = genre_repository.get_by_id(id=genre.id)
+        assert genre_model.id == genre.id
+        assert genre_model.name == genre.name
+        assert genre_model.is_active == genre.is_active
+

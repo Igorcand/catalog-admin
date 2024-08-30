@@ -16,6 +16,12 @@ class GenreOutputSerializer(serializers.Serializer):
 class ListOutputSerializer(serializers.Serializer):
     data = GenreOutputSerializer(many=True)
 
+class RetrieveGenreInputSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+
+class RetrieveGenreOutputSerializer(serializers.Serializer):
+    data = GenreOutputSerializer(source="*")
+
 class CreateGenreInputSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255, allow_blank=False)
     is_active = serializers.BooleanField(default=True)
