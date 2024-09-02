@@ -3,10 +3,15 @@ from dataclasses import dataclass
 from src.core.category.domain.category import Category
 from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
+from enum import StrEnum
+
+class CategoryFilterByType(StrEnum):
+    NAME = "name"
+    DESCRIPTION = "description"
 
 @dataclass
 class ListCategoryRequest:
-    order_by: str = "name"
+    order_by: CategoryFilterByType = ""
 
 @dataclass
 class CategoryOutput:
@@ -35,10 +40,9 @@ class ListCategory:
                 ) for category in categories
             ]
         if request.order_by:
-            try:
+            if request.order_by and request.order_by in CategoryFilterByType:
                 data = sorted(data, key=lambda category: getattr(category, request.order_by))
-            except:
-                pass 
+            
 
         return ListCategoryResponse(data = data)
     

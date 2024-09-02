@@ -1,6 +1,10 @@
 from uuid import UUID
 from dataclasses import dataclass
 from src.core.genre.domain.genre_repository import GenreRepository
+from enum import StrEnum
+
+class GenreFilterByType(StrEnum):
+    NAME = "name"
 
 @dataclass
 class GenreOutput:
@@ -15,7 +19,7 @@ class ListGenre:
 
     @dataclass
     class Input:
-        pass
+        order_by: GenreFilterByType = ""
 
     @dataclass
     class Output:
@@ -32,4 +36,8 @@ class ListGenre:
                 categories=genre.categories,
             ) for genre in genres
         ]
+        if input.order_by:
+            if input.order_by and input.order_by in GenreFilterByType:
+                mapped_genres = sorted(mapped_genres, key=lambda genre: getattr(genre, input.order_by))
+
         return self.Output(data=mapped_genres)

@@ -21,7 +21,7 @@ from src.django_project.category_app.repository import DjangoORMCategoryReposito
 
 class CategoryViewSet(viewsets.ViewSet):
     def list(self, request: Request) -> Response:
-        order_by = request.query_params.get("order_by", "name")
+        order_by = request.query_params.get("order_by", "")
         input = ListCategoryRequest(order_by=order_by)
         use_case = ListCategory(repository=DjangoORMCategoryRepository())
         response = use_case.execute(input)

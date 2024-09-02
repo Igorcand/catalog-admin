@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
 from uuid import UUID, uuid4
-from core._shered.notification import Notification
+from src.core._shered.notification import Notification
 
 @dataclass(kw_only=True)
 class Entity(ABC):
