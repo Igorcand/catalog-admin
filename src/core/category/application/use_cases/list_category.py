@@ -6,7 +6,7 @@ from src.core.category.application.use_cases.exceptions import CategoryNotFound
 
 @dataclass
 class ListCategoryRequest:
-    pass
+    order_by: str = "name"
 
 @dataclass
 class CategoryOutput:
@@ -26,9 +26,7 @@ class ListCategory:
 
     def execute(self, request: ListCategoryRequest) ->ListCategoryResponse:
         categories = self.repository.list()
-
-        return ListCategoryResponse(
-            data = [
+        data = [
                 CategoryOutput(
                     id=category.id,
                     name=category.name,
@@ -36,5 +34,11 @@ class ListCategory:
                     is_active=category.is_active,
                 ) for category in categories
             ]
-        )
+        if request.order_by:
+            try:
+                data = sorted(data, key=lambda category: getattr(category, request.order_by))
+            except:
+                pass 
+
+        return ListCategoryResponse(data = data)
     
