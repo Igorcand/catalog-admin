@@ -17,5 +17,4 @@ class DeleteCastMember:
         cast_member = self.repository.get_by_id(request.id)
         if cast_member is None:
             raise CastMemberNotFound(f"CastMember with {request.id} not found")
-        
-        self.repository.delete(cast_member)
+        self.repository.delete(cast_member.id)

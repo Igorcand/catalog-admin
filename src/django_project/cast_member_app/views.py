@@ -22,7 +22,7 @@ from src.django_project.cast_member_app.serializers import (
 class CastMemberViewSet(viewsets.ViewSet):
     def list(self, request: Request) -> Response:
         use_case = ListCastMember(repository=DjangoORMCastMemberRepository())
-        output: ListCastMemberResponse = use_case.execute(input=ListCastMember.Input())
+        output: ListCastMemberResponse = use_case.execute(request=ListCastMemberRequest)
         serializer = ListCastMemberResponseSerializer(instance=output)
         return Response(status=HTTP_200_OK, data=serializer.data)
     
@@ -32,7 +32,7 @@ class CastMemberViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
 
         use_case = CreateCastMember(repository=DjangoORMCastMemberRepository())
-        output = use_case.execute(input=CreateCastMemberResponse(**serializer.validated_data))
+        output = use_case.execute(request=CreateCastMemberRequest(**serializer.validated_data))
         
         return Response(
             status=HTTP_201_CREATED,
@@ -48,10 +48,10 @@ class CastMemberViewSet(viewsets.ViewSet):
             )
         serializer.is_valid(raise_exception=True)
 
-        input = UpdateCastMemberRequest(**serializer.validated_data)
+        request = UpdateCastMemberRequest(**serializer.validated_data)
         use_case = UpdateCastMember(repository=DjangoORMCastMemberRepository())
         try:
-            use_case.execute(input=input)
+            use_case.execute(request=request)
         except InvalidCastMember as err:
             return Response(data={"error": str(err)}, status=HTTP_400_BAD_REQUEST)
         except CastMemberNotFound as err:
@@ -65,10 +65,10 @@ class CastMemberViewSet(viewsets.ViewSet):
         serializer = DeleteCastMemberRequestSerializer(data={"id":pk})
         serializer.is_valid(raise_exception=True)
 
-        input = DeleteCastMemberRequest(**serializer.validated_data)
+        request = DeleteCastMemberRequest(**serializer.validated_data)
         use_case = DeleteCastMember(repository=DjangoORMCastMemberRepository())
         try:
-            use_case.execute(input=input)
+            use_case.execute(request=request)
         except CastMemberNotFound:
             return Response(
                 status=HTTP_404_NOT_FOUND,
