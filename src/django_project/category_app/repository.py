@@ -8,22 +8,13 @@ class DjangoORMCategoryRepository(CategoryRepository):
         self.model = model or CategoryORM
     
     def save(self, category: Category) -> None:
-        self.model.objects.create(
-            id=category.id,
-            name=category.name,
-            description = category.description,
-            is_active=category.is_active
-        )
+        category_orm = CategoryModelMapper.to_model(category)
+        category_orm.save()
     
     def get_by_id(self, id: UUID) -> Category | None:
         try:
             category = self.model.objects.get(id=id)
-            return Category(
-                id=category.id,
-                name=category.name,
-                description=category.description,
-                is_active=category.is_active
-            )
+            return CategoryModelMapper.to_entity(category)
         except self.model.DoesNotExist:
             return None
         
@@ -32,17 +23,30 @@ class DjangoORMCategoryRepository(CategoryRepository):
     
     def list(self) -> list[Category]:
         return [
-            Category(
-                id=category.id,
-                name=category.name,
-                description=category.description,
-                is_active=category.is_active
-            )
-            for category in self.model.objects.all()]
+            CategoryModelMapper.to_entity(category_model)
+            for category_model in self.model.objects.all()]
 
     def update(self, category: Category) -> None:
         self.model.objects.filter(pk=category.id).update(
             name=category.name,
             description=category.description,
             is_active=category.is_active,
+        )
+
+class CategoryModelMapper:
+    @staticmethod
+    def to_model(category: Category) -> CategoryORM:
+        return CategoryORM(
+            id=category.id,
+            name=category.name,
+            description = category.description,
+            is_active=category.is_active
+        )
+    
+    def to_entity(category: CategoryORM) -> Category:
+        return Category(
+            id=category.id,
+            name=category.name,
+            description = category.description,
+            is_active=category.is_active
         )

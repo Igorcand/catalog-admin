@@ -7,24 +7,12 @@ from src.django_project.genre_app.models import Genre as GenreORM
 class DjangoORMGenreRepository(GenreRepository):
     def save(self, genre: Genre):
         with transaction.atomic():
-            genre_model = GenreORM.objects.create(
-                id=genre.id,
-                name=genre.name,
-                is_active=genre.is_active
-            )
-
-            genre_model.categories.set(genre.categories)
+            GenreModelMapper.to_model(genre)
 
     def get_by_id(self, id: UUID) -> Genre | None:
-        print(GenreORM.objects.all())
         try:
             genre_model = GenreORM.objects.get(id=id)
-            return Genre(
-                id=genre_model.id,
-                name=genre_model.name,
-                is_active=genre_model.is_active,
-                categories={category.id for category in genre_model.categories.all()}
-            )
+            return GenreModelMapper.to_entity(genre_model)
         except GenreORM.DoesNotExist:
             return None
 
@@ -47,9 +35,28 @@ class DjangoORMGenreRepository(GenreRepository):
             genre_model.categories.set(genre.categories)
     
     def list(self) -> list[Genre]:
-        return [Genre(
-            id=genre_model.id,
-            name=genre_model.name,
-            is_active=genre_model.is_active,
-            categories={category.id for category in genre_model.categories.all()}
-        ) for genre_model in GenreORM.objects.all()]
+        return [
+            GenreModelMapper.to_entity(genre_model)
+         for genre_model in GenreORM.objects.all()]
+
+class GenreModelMapper:
+    @staticmethod
+    def to_model(genre: Genre) -> GenreORM:
+        genre_model = GenreORM.objects.create(
+            id=genre.id,
+            name=genre.name,
+            is_active=genre.is_active
+        )
+
+        genre_model.categories.set(genre.categories)
+        
+        return genre_model
+    
+    def to_entity(genre: GenreORM) -> Genre:
+        return Genre(
+            id=genre.id,
+            name=genre.name,
+            is_active=genre.is_active,
+            categories={category.id for category in genre.categories.all()}
+
+        )
