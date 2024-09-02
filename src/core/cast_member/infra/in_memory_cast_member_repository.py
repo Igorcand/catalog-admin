@@ -2,7 +2,7 @@ from uuid import UUID
 from src.core.cast_member.domain.cast_member import CastMember
 from src.core.cast_member.domain.cast_member_repository import CastMemberRepository
 
-class InMemoryCast_memberRepository(CastMemberRepository):
+class InMemoryCastMemberRepository(CastMemberRepository):
     def __init__(self, categories:list[CastMember] = None) -> None:
         self.cast_members = categories or []
     
