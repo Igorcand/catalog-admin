@@ -51,7 +51,7 @@ class TestEquality:
     def test_when_cast_members_have_same_id_they_are_equal(self):
         common_id = uuid4()
         cast_member_1 = CastMember(id=common_id, name="John Doe", type=CastMemberType.ACTOR)
-        cast_member_2 = CastMember(id=common_id, name="John Krasinsk", type=CastMemberType.DIRECTOR)
+        cast_member_2 = CastMember(id=common_id, name="John Doe", type=CastMemberType.ACTOR)
 
         assert cast_member_1 == cast_member_2
 

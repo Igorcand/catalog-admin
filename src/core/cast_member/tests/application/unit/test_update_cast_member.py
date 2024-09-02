@@ -72,7 +72,7 @@ class TestUpdateCastMember:
         request = UpdateCastMemberRequest(
             id=actor.id,
             name="",
-            type="",
+            type=CastMemberType.DIRECTOR,
         )
 
         with pytest.raises(InvalidCastMember) as exc:

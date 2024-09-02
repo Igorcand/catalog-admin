@@ -35,7 +35,7 @@ class TestCreateCastMember:
         use_case = CreateCastMember(repository=repository)
         use_case = CreateCastMember(repository=repository)
         with pytest.raises(InvalidCastMember, match="name cannot be empty") as exc_info:
-            use_case.execute(CreateCastMemberRequest(name="", type=""))
+            use_case.execute(CreateCastMemberRequest(name="", type=CastMemberType.DIRECTOR))
 
         assert exc_info.type is InvalidCastMember
         assert str(exc_info.value) == "name cannot be empty"
