@@ -8,8 +8,7 @@ from src.core.cast_member.domain.cast_member import CastMemberType
 from src.core.cast_member.infra.in_memory_cast_member_repository import InMemoryCastMemberRepository
 from src.core.cast_member.application.use_cases.exceptions import InvalidCastMember
 
-
-
+@pytest.mark.cast_member
 class TestCreateCastMember:
     def test_create_cast_member_with_valid_data(self):
         repository = InMemoryCastMemberRepository()

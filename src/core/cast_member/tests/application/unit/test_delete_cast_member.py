@@ -7,7 +7,7 @@ from src.core.cast_member.application.use_cases.delete_cast_member import Delete
 from src.core.cast_member.application.use_cases.exceptions import CastMemberNotFound
 from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 
-
+@pytest.mark.cast_member
 class TestDeleteCastMember:
     def test_delete_cast_member_from_repository(self):
         cast_member = CastMember(

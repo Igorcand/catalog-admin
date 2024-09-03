@@ -15,7 +15,7 @@ from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 from src.core.cast_member.infra.in_memory_cast_member_repository import InMemoryCastMemberRepository
 
 
-
+@pytest.mark.cast_member
 class TestUpdateCastMember:
 
     def test_update_cast_member_with_provided_fields(

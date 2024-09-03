@@ -1,4 +1,5 @@
 from uuid import UUID
+import pytest
 from src.core.cast_member.application.use_cases.update_cast_member import (
     UpdateCastMember,
     UpdateCastMemberRequest,
@@ -8,7 +9,7 @@ from src.core.cast_member.infra.in_memory_cast_member_repository import (
     InMemoryCastMemberRepository,
 )
 
-
+@pytest.mark.cast_member
 class TestUpdateCastMember:
     def test_update_cast_member_with_provided_fields(self):
         cast_member = CastMember(

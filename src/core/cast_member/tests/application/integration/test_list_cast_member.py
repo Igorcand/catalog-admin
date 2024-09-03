@@ -12,7 +12,7 @@ from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 from src.core.cast_member.infra.in_memory_cast_member_repository import InMemoryCastMemberRepository
 from src.core._shered.pagination import ListOutputMeta
 
-
+@pytest.mark.cast_member
 class TestListCastMember:
     @pytest.fixture
     def actor(self) -> CastMember:

@@ -4,6 +4,7 @@ import uuid
 
 from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 
+@pytest.mark.cast_member
 class TestCastMember:
     def test_name_is_required(self):
         with pytest.raises(TypeError):
@@ -28,7 +29,7 @@ class TestCastMember:
         assert cast_member.name == "John Doe"
         assert cast_member.type == CastMemberType.ACTOR
     
-
+@pytest.mark.cast_member
 class TestUpdateCastMember:
     def test_update_cast_member_with_name_and_type(self):
         cast_member = CastMember(name="John Doe", type=CastMemberType.ACTOR)
@@ -47,6 +48,7 @@ class TestUpdateCastMember:
         with pytest.raises(ValueError, match="name cannot be empty"):
             CastMember(name="", type=CastMemberType.ACTOR)
 
+@pytest.mark.cast_member
 class TestEquality:
     def test_when_cast_members_have_same_id_they_are_equal(self):
         common_id = uuid4()

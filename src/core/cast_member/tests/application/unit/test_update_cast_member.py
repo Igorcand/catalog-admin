@@ -13,7 +13,7 @@ from src.core.cast_member.application.use_cases.update_cast_member import (
 )
 from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 
-
+@pytest.mark.cast_member
 class TestUpdateCastMember:
     @pytest.fixture
     def actor(self) -> CastMember:

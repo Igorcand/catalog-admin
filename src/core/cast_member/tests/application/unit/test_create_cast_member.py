@@ -7,6 +7,7 @@ from src.core.cast_member.application.use_cases.create_cast_member import Create
 from src.core.cast_member.domain.cast_member_repository import CastMemberRepository
 from src.core.cast_member.application.use_cases.exceptions import InvalidCastMember
 
+@pytest.mark.cast_member
 class TestCreateCastMember:
     def test_create_cast_member_with_valid_data(self):
         mock_repository = MagicMock(CastMemberRepository)
