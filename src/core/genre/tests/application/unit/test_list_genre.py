@@ -3,6 +3,7 @@ from src.core.genre.application.use_cases.list_genre import ListGenre, GenreOutp
 from src.core.genre.domain.genre_repository import GenreRepository
 from src.core.genre.domain.genre import Genre
 from unittest.mock import create_autospec
+from src.core._shered.pagination import ListOutputMeta
 
 
 class TestListGenre:
@@ -35,7 +36,8 @@ class TestListGenre:
                     categories=set(),
                     is_active=True,
                 ),
-            ]
+            ],
+            meta = ListOutputMeta(current_page=1, per_page=2, total=2)
         )
 
     def test_when_no_genres_exist_then_return_empty_data(self):
@@ -45,4 +47,7 @@ class TestListGenre:
         use_case = ListGenre(repository=genre_repository)
         output = use_case.execute(ListGenre.Input())
 
-        assert output == ListGenre.Output(data=[])
+        assert output == ListGenre.Output(
+            data=[],
+            meta = ListOutputMeta(current_page=1, per_page=2, total=0)
+            )

@@ -10,7 +10,7 @@ from src.core.cast_member.application.use_cases.list_cast_member import (
 )
 from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 from src.core.cast_member.infra.in_memory_cast_member_repository import InMemoryCastMemberRepository
-
+from src.core._shered.pagination import ListOutputMeta
 
 
 class TestListCastMember:
@@ -34,7 +34,10 @@ class TestListCastMember:
         use_case = ListCastMember(repository=InMemoryCastMemberRepository())
         response = use_case.execute(request=ListCastMemberRequest())
 
-        assert response == ListCastMemberResponse(data=[])
+        assert response == ListCastMemberResponse(
+            data=[],
+            meta = ListOutputMeta(current_page=1, per_page=2, total=0)
+            )
 
     def test_when_cast_members_exist_then_return_mapped_list(
         self,
@@ -60,5 +63,6 @@ class TestListCastMember:
                     name=director.name,
                     type=director.type,
                 ),
-            ]
+            ],
+            meta = ListOutputMeta(current_page=1, per_page=2, total=2)
         )

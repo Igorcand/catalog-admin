@@ -13,8 +13,14 @@ class GenreOutputSerializer(serializers.Serializer):
     is_active = serializers.BooleanField()
     categories = serializers.ListField(child=serializers.UUIDField())
 
+class ListOutputMetaSerializer(serializers.Serializer):
+    current_page = serializers.IntegerField()
+    per_page = serializers.IntegerField()
+    total = serializers.IntegerField()
+    
 class ListOutputSerializer(serializers.Serializer):
     data = GenreOutputSerializer(many=True)
+    meta = ListOutputMetaSerializer()
 
 class RetrieveGenreInputSerializer(serializers.Serializer):
     id = serializers.UUIDField()

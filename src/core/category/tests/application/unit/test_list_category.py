@@ -1,5 +1,6 @@
 from unittest.mock import create_autospec
-from src.core.category.application.use_cases.list_category import ListCategory, ListCategoryRequest, ListCategoryResponse, CategoryOutput, ListOutputMeta
+from src.core.category.application.use_cases.list_category import ListCategory, ListCategoryRequest, ListCategoryResponse, CategoryOutput
+from src.core._shered.pagination import ListOutputMeta
 from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.domain.category import Category
 

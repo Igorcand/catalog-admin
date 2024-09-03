@@ -4,7 +4,8 @@ from src.core.cast_member.application.use_cases.exceptions import InvalidCastMem
 from src.core.cast_member.domain.cast_member_repository import CastMemberRepository
 from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 from enum import StrEnum
-
+from src.core._shered.pagination import ListOutputMeta, ListOutput
+from src import config
 
 class CastMemberFilterByType(StrEnum):
     NAME = "name"
@@ -20,11 +21,12 @@ class CastMemberOutput:
 @dataclass
 class ListCastMemberRequest:
     order_by : CastMemberFilterByType = ""
+    current_page: str = 1
 
 
 @dataclass
-class ListCastMemberResponse:
-    data: list[CastMemberOutput]
+class ListCastMemberResponse(ListOutput[CastMemberOutput]):
+    pass
 
 
 class ListCastMember:
@@ -45,7 +47,16 @@ class ListCastMember:
         
         if request.order_by:
             if request.order_by and request.order_by in CastMemberOutput:
-                mapped_genres = sorted(mapped_genres, key=lambda genre: getattr(genre, request.order_by))
+                data = sorted(data, key=lambda genre: getattr(genre, request.order_by))
+        
+        page_offset = (request.current_page -1) * config.DEFAULT_PAGE_SIZE
+        page = data[page_offset:page_offset+config.DEFAULT_PAGE_SIZE]
+
         return ListCastMemberResponse(
-            data=data
+            data=page,
+            meta = ListOutputMeta(
+                current_page = request.current_page,
+                per_page = config.DEFAULT_PAGE_SIZE,
+                total = len(cast_members)
+            )
         )

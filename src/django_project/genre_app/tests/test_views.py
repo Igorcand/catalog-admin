@@ -67,6 +67,7 @@ class TestListAPI:
 
         assert response.status_code == HTTP_200_OK
         assert response.data["data"]
+        assert response.data["meta"]
 
         assert response.data["data"][0]["id"] == str(genre_romance.id)
         assert response.data["data"][0]["name"] == "Romance"

@@ -19,8 +19,9 @@ from src.django_project.genre_app.repository import DjangoORMGenreRepository
 class GenreViewSet(viewsets.ViewSet):
     def list(self, request: Request) -> Response:
         order_by = request.query_params.get("order_by", "")
+        current_page = int(request.query_params.get("current_page", 1))
         use_case = ListGenre(repository=DjangoORMGenreRepository())
-        output: ListGenre.Output = use_case.execute(input=ListGenre.Input(order_by=order_by))
+        output: ListGenre.Output = use_case.execute(input=ListGenre.Input(order_by=order_by, current_page=current_page))
         serializer = ListOutputSerializer(instance=output)
         return Response(status=HTTP_200_OK, data=serializer.data)
     

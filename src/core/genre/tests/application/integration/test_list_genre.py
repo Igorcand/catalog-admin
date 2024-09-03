@@ -3,6 +3,7 @@ from src.core.category.infra.in_memory_category_repository import InMemoryCatego
 from src.core.genre.infra.in_memory_genre_repository import InMemoryGenreRepository
 from src.core.genre.domain.genre import Genre
 from src.core.genre.application.use_cases.list_genre import ListGenre, GenreOutput
+from src.core._shered.pagination import ListOutputMeta
 
 
 class TestListGenre:
@@ -23,13 +24,15 @@ class TestListGenre:
 
         assert len(output.data) == 1
         assert output == ListGenre.Output(
-            data = [GenreOutput(
-                    id = genre.id,
-                    name=genre.name,
-                    is_active=True,
-                    categories={movie_category.id, documentary_category.id}
-                )
-            ]
+            data = [
+                    GenreOutput(
+                        id = genre.id,
+                        name=genre.name,
+                        is_active=True,
+                        categories={movie_category.id, documentary_category.id}
+                    )
+                ],
+            meta = ListOutputMeta(current_page=1, per_page=2, total=1)
         )
     
     def test_list_genres_without_associated_categories(self):
@@ -42,11 +45,13 @@ class TestListGenre:
 
         assert len(output.data) == 1
         assert output == ListGenre.Output(
-            data = [GenreOutput(
-                    id = genre.id,
-                    name=genre.name,
-                    is_active=True,
-                    categories=set()
-                )
-            ]
+            data = [
+                    GenreOutput(
+                        id = genre.id,
+                        name=genre.name,
+                        is_active=True,
+                        categories=set()
+                    )
+                ],
+            meta = ListOutputMeta(current_page=1, per_page=2, total=1)
         )
