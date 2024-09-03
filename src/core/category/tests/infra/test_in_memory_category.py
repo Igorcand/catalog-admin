@@ -1,6 +1,8 @@
 from src.core.category.domain.category import Category
 from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
+import pytest
 
+@pytest.mark.category
 class TestInMemoryCategoryRepository:
     def test_can_save_category(self):
         repository = InMemoryCategoryRepository()

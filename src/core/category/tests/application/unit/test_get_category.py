@@ -6,6 +6,7 @@ from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.domain.category import Category
 import pytest
 
+@pytest.mark.category
 class TestGetCateory:
     def test_return_found_category(self):
         category = Category(

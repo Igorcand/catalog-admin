@@ -6,6 +6,7 @@ from src.core.category.infra.in_memory_category_repository import InMemoryCatego
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
 import pytest
 
+@pytest.mark.category
 class TestUpdateCategory:
     def test_can_update_category_name_and_description(self):
         category = Category(

@@ -2,7 +2,10 @@ from src.core.category.application.use_cases.list_category import ListCategory, 
 from src.core._shered.pagination import ListOutputMeta
 from src.core.category.domain.category import Category
 from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
+import pytest
 
+
+@pytest.mark.category
 class TestListCategory:
     def test_then_return_empty_list(self):
         category = Category(

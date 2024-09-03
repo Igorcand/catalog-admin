@@ -5,6 +5,7 @@ from src.core.category.infra.in_memory_category_repository import InMemoryCatego
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
 import pytest
 
+@pytest.mark.category
 class TestGetCategory:
     def test_get_category_by_id(self):
         category = Category(

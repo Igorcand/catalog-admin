@@ -4,7 +4,9 @@ from src.core.category.application.use_cases.update_category import UpdateCatego
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
 from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.domain.category import Category
+import pytest
 
+@pytest.mark.category
 class TestUpdateCategory:
     def test_update_category_name(self):
         category = Category(

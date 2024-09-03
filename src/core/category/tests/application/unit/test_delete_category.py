@@ -6,6 +6,7 @@ from src.core.category.application.use_cases.delete_category import DeleteCatego
 import pytest
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
 
+@pytest.mark.category
 class TestDeleteCategory:
     def test_delete_category_from_repository(self):
         category = Category(

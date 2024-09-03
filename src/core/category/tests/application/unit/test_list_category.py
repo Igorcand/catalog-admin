@@ -3,8 +3,9 @@ from src.core.category.application.use_cases.list_category import ListCategory, 
 from src.core._shered.pagination import ListOutputMeta
 from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.domain.category import Category
+import pytest
 
-
+@pytest.mark.category
 class TestListCategory:
     def test_when_no_categories_in_repository_then_return_empty_list(self):
         category = Category(

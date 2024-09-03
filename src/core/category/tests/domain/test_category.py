@@ -2,6 +2,7 @@ import pytest
 from uuid import UUID, uuid4
 from src.core.category.domain.category import Category
 
+@pytest.mark.category
 class TestCategory:
     def test_name_is_required(self):
         with pytest.raises(TypeError):
@@ -46,6 +47,7 @@ class TestCategory:
         category = Category(id=id, name="Filme")
         assert repr(category) == f"Category Filme ({id})"
 
+@pytest.mark.category
 class TestUpdateCategory:
     def test_update_category_with_name_and_description(self):
         category = Category(name="Filme", description="Filmes em geral")
@@ -64,6 +66,7 @@ class TestUpdateCategory:
         with pytest.raises(ValueError, match="name cannot be empty"):
             category.update_category(name="", description="Series em geral")
 
+@pytest.mark.category
 class TestActivate:
     def test_activate_inactive_category(self):
         category = Category(name="Filme", description="Filmes em geral", is_active=False)
@@ -77,6 +80,7 @@ class TestActivate:
 
         assert category.is_active is True
 
+@pytest.mark.category
 class TestDeactivate:
     def test_desactivate_inactive_category(self):
         category = Category(name="Filme", description="Filmes em geral", is_active=False)
@@ -90,6 +94,7 @@ class TestDeactivate:
 
         assert category.is_active is False
 
+@pytest.mark.category
 class TestEquality:
     def test_when_categories_have_name_id_they_are_equal(self):
         common_id = uuid4()

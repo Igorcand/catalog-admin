@@ -5,6 +5,7 @@ from src.core.category.application.use_cases.exceptions import InvalidCategoryDa
 from src.core.category.domain.category_repository import CategoryRepository
 import pytest
 
+@pytest.mark.category
 class TestCreateCateory:
     def test_create_category_with_valid_data(self):
         mock_repository = MagicMock(CategoryRepository)
