@@ -18,6 +18,7 @@ def category_repository() -> DjangoORMCategoryRepository:
 
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestListAPI():
 
     def test_list_categories(self,category_movie: Category,category_repository: DjangoORMCategoryRepository) -> None:
@@ -45,6 +46,7 @@ class TestListAPI():
         assert len(response.data['data']) == 1
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestRetrieveAPI():
     def test_when_id_is_invalid_return_400(self) -> None:
         url = f"/api/categories/159761298546/"
@@ -76,6 +78,7 @@ class TestRetrieveAPI():
         assert response.status_code == HTTP_404_NOT_FOUND
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestCreateAPI():
     def test_when_payload_is_invalid_then_return_400(self) -> None:
         url = f"/api/categories/"
@@ -112,6 +115,7 @@ class TestCreateAPI():
         )
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestUpdateAPI():
     def test_when_payload_is_invalid_then_return_400(self) -> None:
         url = f"/api/categories/123523634/" #UUID invalid
@@ -171,6 +175,7 @@ class TestUpdateAPI():
         assert response.status_code == HTTP_404_NOT_FOUND
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestPartialUpdateAPI():
     def test_when_id_is_invalid_then_return_400(self) -> None:
         url = f"/api/categories/123523634/" #UUID invalid
@@ -220,6 +225,7 @@ class TestPartialUpdateAPI():
         assert response.status_code == HTTP_404_NOT_FOUND
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestDeleteAPI():
     def test_when_id_is_invalid_then_return_400(self) -> None:
         url = f"/api/categories/123523634/" #UUID invalid

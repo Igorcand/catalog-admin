@@ -31,6 +31,7 @@ def cast_member_repository() -> DjangoORMCastMemberRepository:
 
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestListAPI:
     def test_list_cast_members(
         self,
@@ -69,6 +70,7 @@ class TestListAPI:
 
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestCreateAPI:
     def test_when_request_data_is_valid_then_create_cast_member(
         self,
@@ -107,6 +109,7 @@ class TestCreateAPI:
 
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestUpdateAPI:
     def test_when_request_data_is_valid_then_update_cast_member(
         self,
@@ -156,6 +159,7 @@ class TestUpdateAPI:
 
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestDeleteAPI:
     def test_when_cast_member_pk_is_invalid_then_return_400(self) -> None:
         url = reverse("cast_member-detail", kwargs={"pk": "invalid-uuid"})

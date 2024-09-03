@@ -4,6 +4,7 @@ from src.django_project.category_app.models import Category as CategoryModel
 import pytest
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestSaveCategory:
     def test_save_category_in_database(self):
         category = Category(

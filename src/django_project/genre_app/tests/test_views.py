@@ -50,6 +50,7 @@ def genre_drama() -> Genre:
     )
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestListAPI:
     def test_list_genre_and_categories(
             self,
@@ -84,6 +85,7 @@ class TestListAPI:
         assert response.data["data"][1]["categories"] == []
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestRetrieveAPI():
     def test_when_id_is_invalid_return_400(self) -> None:
         url = f"/api/genres/159761298546/"
@@ -124,8 +126,8 @@ class TestRetrieveAPI():
 
         assert response.status_code == HTTP_404_NOT_FOUND
 
-
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestCreateAPI:
     def test_when_request_data_is_valid_then_create_genre(
             self,
@@ -161,6 +163,7 @@ class TestCreateAPI:
         )
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestUpdateAPI:
     def test_when_request_data_is_valid_then_update_genre(
         self,
@@ -233,8 +236,8 @@ class TestUpdateAPI:
 
         assert response.status_code == HTTP_404_NOT_FOUND
 
-
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestDeleteAPI:
     def test_when_genre_does_not_exist_then_raise_404(self):
         url = f"/api/genres/{uuid4()}/"

@@ -3,6 +3,7 @@ import pytest
 from rest_framework.test import APIClient
 
 @pytest.mark.django_db
+@pytest.mark.e2e
 class TestCreateAndEditCategory:
     def test_user_can_create_and_edit_category(self) -> None:
         api_client = APIClient()

@@ -9,6 +9,7 @@ from src.django_project.genre_app.models import Genre as GenreORM
 
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestSaveGenre:
     def test_saves_genre_in_database(self):
         genre = Genre(name="Action")
@@ -46,6 +47,7 @@ class TestSaveGenre:
         assert related_category.id == category.id
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestGetGenre:
     def test_get_genre_does_not_exists_should_return_none(self):
         genre_repository = DjangoORMGenreRepository() 
@@ -71,6 +73,7 @@ class TestGetGenre:
  
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestDeleteGenre:
     def test_delete_genre_does_not_exists_should_return_none(self):
         genre_repository = DjangoORMGenreRepository() 
@@ -93,6 +96,7 @@ class TestDeleteGenre:
         assert GenreORM.objects.count() == 0
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestUpdateGenre:    
     def test_update_genre_existing_should_return_success(self):
         genre = Genre(name="Action")
@@ -116,6 +120,7 @@ class TestUpdateGenre:
         assert genre_model_uptaded.is_active == update_genre.is_active
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestGetGenre:    
     def test_get_genre_existing_should_return_success(self):
         genre = Genre(name="Action")

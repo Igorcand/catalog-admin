@@ -5,6 +5,7 @@ from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 
 
 @pytest.mark.django_db
+@pytest.mark.web_service
 class TestSave:
     def test_saves_cast_member_in_database(self):
         cast_member = CastMember(
