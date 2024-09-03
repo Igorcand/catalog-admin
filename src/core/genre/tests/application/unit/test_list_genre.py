@@ -4,8 +4,9 @@ from src.core.genre.domain.genre_repository import GenreRepository
 from src.core.genre.domain.genre import Genre
 from unittest.mock import create_autospec
 from src.core._shered.pagination import ListOutputMeta
+import pytest
 
-
+@pytest.mark.genre
 class TestListGenre:
     def test_list_genres_with_associated_categories(self):
         

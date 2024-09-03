@@ -2,8 +2,9 @@ import uuid
 from src.core.category.application.use_cases.delete_category import DeleteCategory, DeleteCategoryRequest
 from src.core.category.domain.category import Category
 from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
+import pytest
 
-
+@pytest.mark.genre
 class TestDeleteCategory:
     def test_delete_category_from_repository(self):
         category_filme = Category(

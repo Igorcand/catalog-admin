@@ -34,6 +34,7 @@ def mock_empty_category_repository() -> CategoryRepository:
     repository.list.return_value = []
     return repository
 
+@pytest.mark.genre
 class TestUpdateGenre:
 
     def test_update_genre_does_not_exist_than_raise_exceptions(

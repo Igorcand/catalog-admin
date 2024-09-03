@@ -34,7 +34,7 @@ def mock_empty_category_repository() -> CategoryRepository:
     repository.list.return_value = []
     return repository
 
-
+@pytest.mark.genre
 class TestCreateGenre:
     def test_when_categories_do_not_exist_then_raise_related_categories_not_found(
             self,

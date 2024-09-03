@@ -22,7 +22,7 @@ def category_repository(movie_category, documentary_category) -> CategoryReposit
     return InMemoryCategoryRepository(categories=[movie_category, documentary_category])
 
 
-
+@pytest.mark.genre
 class TestCreateGenre:
     def test_create_genre_with_associated_categories(
             self,

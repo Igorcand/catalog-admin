@@ -6,6 +6,7 @@ from src.core.genre.domain.genre_repository import GenreRepository
 from src.core.genre.domain.genre import Genre
 import pytest
 
+@pytest.mark.genre
 class TestGetGenre:
     def test_return_found_genre(self):
         genre = Genre(

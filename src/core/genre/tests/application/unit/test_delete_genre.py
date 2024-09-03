@@ -14,6 +14,7 @@ from unittest.mock import create_autospec
 def mock_genre_repository() -> GenreRepository:
     return create_autospec(GenreRepository)
 
+@pytest.mark.genre
 class TestDeleteGenre:
     def test_delete_genre_from_repository(
             self,

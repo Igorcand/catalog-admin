@@ -2,6 +2,7 @@ import pytest
 from uuid import UUID, uuid4
 from src.core.genre.domain.genre import Genre
 
+@pytest.mark.genre
 class TestGenre:
     def test_name_is_required(self):
         with pytest.raises(TypeError):
@@ -48,6 +49,7 @@ class TestGenre:
         genre = Genre(id=id, name="Romance")
         assert repr(genre) == f"Genre Romance ({id})"
 
+@pytest.mark.genre
 class TestActivate:
     def test_activate_inactive_genre(self):
         genre = Genre(
@@ -67,6 +69,7 @@ class TestActivate:
 
         assert genre.is_active is True
 
+@pytest.mark.genre
 class TestDeactivate:
     def test_desactivate_inactive_genre(self):
         genre = Genre(
@@ -86,6 +89,7 @@ class TestDeactivate:
 
         assert genre.is_active is False
 
+@pytest.mark.genre
 class TestChangeName():
     def test_change_name(self):
         genre = Genre(name="Romance")
@@ -97,6 +101,7 @@ class TestChangeName():
         with pytest.raises(ValueError, match="name cannot be empty"):
             genre.change_name("")
 
+@pytest.mark.genre
 class TestAddCategory:
     def test_add_category_to_genre(self):
         genre = Genre(name="Romance")
@@ -106,6 +111,7 @@ class TestAddCategory:
         genre.add_category(category_id)
         assert category_id in genre.categories
 
+@pytest.mark.genre
 class TestRemoveCategory:
     def test_remove_category_to_genre(self):
         category_id = uuid4()
@@ -116,8 +122,7 @@ class TestRemoveCategory:
         assert category_id not in genre.categories
         assert genre.categories == set()
 
-
-
+@pytest.mark.genre
 class TestEquality:
     def test_when_categories_have_name_id_they_are_equal(self):
         common_id = uuid4()

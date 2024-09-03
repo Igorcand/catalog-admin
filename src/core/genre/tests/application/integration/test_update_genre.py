@@ -15,7 +15,7 @@ def movie_category() -> Category:
 def documentary_category() -> Category:
     return Category(name="Documentary")
 
-
+@pytest.mark.genre
 class TestUpdateGenre: 
     def test_update_genre_with_valid_data_should_success(
             self,

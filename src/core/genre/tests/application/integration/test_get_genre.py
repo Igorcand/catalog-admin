@@ -5,6 +5,7 @@ from src.core.genre.infra.in_memory_genre_repository import InMemoryGenreReposit
 from src.core.genre.application.use_cases.exceptions import GenreNotFound
 import pytest
 
+@pytest.mark.genre
 class TestGetGenre:
     def test_get_genre_by_id(self):
         genre = Genre(

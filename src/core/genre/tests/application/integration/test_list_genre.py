@@ -4,8 +4,9 @@ from src.core.genre.infra.in_memory_genre_repository import InMemoryGenreReposit
 from src.core.genre.domain.genre import Genre
 from src.core.genre.application.use_cases.list_genre import ListGenre, GenreOutput
 from src.core._shered.pagination import ListOutputMeta
+import pytest
 
-
+@pytest.mark.genre
 class TestListGenre:
     def test_list_genres_with_associated_categories(self):
         category_repository = InMemoryCategoryRepository()
