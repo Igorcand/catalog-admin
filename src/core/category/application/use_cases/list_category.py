@@ -1,5 +1,5 @@
 from uuid import UUID
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from src.core.category.domain.category import Category
 from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
@@ -12,6 +12,7 @@ class CategoryFilterByType(StrEnum):
 @dataclass
 class ListCategoryRequest:
     order_by: CategoryFilterByType = ""
+    current_page: str = 1
 
 @dataclass
 class CategoryOutput:
@@ -21,8 +22,15 @@ class CategoryOutput:
     is_active: bool
 
 @dataclass
+class ListOutputMeta:
+    current_page: int
+    per_page: int
+    total: int
+
+@dataclass
 class ListCategoryResponse:
     data: list[CategoryOutput]
+    meta: ListOutputMeta = field(default_factory=ListOutputMeta)
 
 
 class ListCategory:
@@ -42,7 +50,16 @@ class ListCategory:
         if request.order_by:
             if request.order_by and request.order_by in CategoryFilterByType:
                 data = sorted(data, key=lambda category: getattr(category, request.order_by))
-            
-
-        return ListCategoryResponse(data = data)
+        
+        DEFAULT_PAGE_SIZE = 2
+        page_offset = (request.current_page -1) * DEFAULT_PAGE_SIZE
+        categories_page = data[page_offset:page_offset+DEFAULT_PAGE_SIZE]
+        return ListCategoryResponse(
+            data = categories_page,
+            meta = ListOutputMeta(
+                current_page = request.current_page,
+                per_page = DEFAULT_PAGE_SIZE,
+                total = len(data)
+            )
+            )
     

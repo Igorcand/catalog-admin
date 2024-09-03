@@ -22,7 +22,9 @@ from src.django_project.category_app.repository import DjangoORMCategoryReposito
 class CategoryViewSet(viewsets.ViewSet):
     def list(self, request: Request) -> Response:
         order_by = request.query_params.get("order_by", "")
-        input = ListCategoryRequest(order_by=order_by)
+        current_page = int(request.query_params.get("current_page", 1))
+
+        input = ListCategoryRequest(order_by=order_by, current_page=current_page)
         use_case = ListCategory(repository=DjangoORMCategoryRepository())
         response = use_case.execute(input)
         serializer = ListCategoryResponseSerializer(instance=response)

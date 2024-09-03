@@ -9,7 +9,14 @@ class TestCreateAndEditCategory:
 
         #Verify empty database
         list_response = api_client.get("/api/categories/")
-        assert list_response.data == {"data": []}
+        assert list_response.data == {
+            "data": [],
+            "meta": {
+               "current_page": 1,
+                "per_page": 2,
+                "total": 0 
+            }
+            }
 
         #create item
         create_response = api_client.post(
@@ -23,14 +30,21 @@ class TestCreateAndEditCategory:
 
         #Verify created item
         list_response = api_client.get("/api/categories/")
-        assert list_response.data == {"data": [
-            {   
-                "id": created_category_id,
-                "name": "Movie", 
-                "description": "Movie Description",
-                "is_active": True
+        assert list_response.data == {
+            "data": [
+                {   
+                    "id": created_category_id,
+                    "name": "Movie", 
+                    "description": "Movie Description",
+                    "is_active": True
+                }
+            ],
+            "meta": {
+               "current_page": 1,
+                "per_page": 2,
+                "total": 1 
             }
-        ]}
+        }
 
         #Update created item
         update_response = api_client.put(f"/api/categories/{created_category_id}/",
@@ -46,21 +60,35 @@ class TestCreateAndEditCategory:
 
         #Verify created item
         list_response = api_client.get("/api/categories/")
-        assert list_response.data == {"data": [
-            {   
-                "id": created_category_id,
-                "name": "Documentary", 
-                "description": "Documentary Description",
-                "is_active": False
+        assert list_response.data == {
+            "data": [
+                {   
+                    "id": created_category_id,
+                    "name": "Documentary", 
+                    "description": "Documentary Description",
+                    "is_active": False
+                }
+            ],
+            "meta": {
+               "current_page": 1,
+                "per_page": 2,
+                "total": 1 
             }
-        ]}
+        }
     
     def test_user_can_create_and_delete_category(self) -> None:
         api_client = APIClient()
 
         #Verify empty database
         list_response = api_client.get("/api/categories/")
-        assert list_response.data == {"data": []}
+        assert list_response.data == {
+            "data": [],
+            "meta": {
+               "current_page": 1,
+                "per_page": 2,
+                "total": 0 
+            }
+            }
 
         #create item
         create_response = api_client.post(
@@ -74,14 +102,21 @@ class TestCreateAndEditCategory:
 
         #Verify created item
         list_response = api_client.get("/api/categories/")
-        assert list_response.data == {"data": [
-            {   
-                "id": created_category_id,
-                "name": "Movie", 
-                "description": "Movie Description",
-                "is_active": True
+        assert list_response.data == {
+            "data": [
+                {   
+                    "id": created_category_id,
+                    "name": "Movie", 
+                    "description": "Movie Description",
+                    "is_active": True
+                }
+            ],
+            "meta": {
+               "current_page": 1,
+                "per_page": 2,
+                "total": 1 
             }
-        ]}
+        }
 
         #Update created item
         delete_response = api_client.delete(f"/api/categories/{created_category_id}/",)
@@ -89,4 +124,11 @@ class TestCreateAndEditCategory:
 
         #Verify created item
         list_response = api_client.get("/api/categories/")
-        assert list_response.data == {"data": []}
+        assert list_response.data == {
+            "data": [],
+            "meta": {
+               "current_page": 1,
+                "per_page": 2,
+                "total": 0 
+            }
+        }
