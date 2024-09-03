@@ -3,8 +3,8 @@ from src.core.cast_member.domain.cast_member import CastMember
 from src.core.cast_member.domain.cast_member_repository import CastMemberRepository
 
 class InMemoryCastMemberRepository(CastMemberRepository):
-    def __init__(self, categories:list[CastMember] = None) -> None:
-        self.cast_members = categories or []
+    def __init__(self, cast_members:list[CastMember] = None) -> None:
+        self.cast_members = cast_members or []
     
     def save(self, cast_member: CastMember) -> None:
         self.cast_members.append(cast_member)

@@ -43,7 +43,7 @@ class CreateVideoWithoutMedia:
     
     def validate_genres(self, input: Input, notification:Notification) -> None:
         genres_ids = {genre.id for genre in self.genre_repository.list()}
-        if not input.categories.issubset(genres_ids):
+        if not input.genres.issubset(genres_ids):
             notification.add_error(
                 f"Genres not found: {input.genres - genres_ids}"
             )
@@ -52,7 +52,7 @@ class CreateVideoWithoutMedia:
         cast_member_ids = {cast_member.id for cast_member in self.cast_member_repository.list()}
         if not input.cast_members.issubset(cast_member_ids):
             notification.add_error(
-                f"Cast Member not found: {input.cast_member - cast_member_ids}"
+                f"Cast Member not found: {input.cast_members - cast_member_ids}"
             )
 
     def execute(self, input: Input) -> Output:
@@ -71,14 +71,14 @@ class CreateVideoWithoutMedia:
                 description=input.description,
                 launch_year=input.launch_year,
                 duration=input.duration,
-                duration=False,
+                published=False,
                 rating=input.rating,
                 categories=input.categories,
-                tigenrestle=input.genres,
+                genres=input.genres,
                 cast_members=input.cast_members,
             )
         except ValueError as err:
             raise InvalidVideo(err)
 
-        self.repository.save()
+        self.repository.save(video)
         return self.Output(id=video.id)
