@@ -2,7 +2,7 @@ from uuid import UUID
 from dataclasses import dataclass
 from src.core.genre.domain.genre_repository import GenreRepository
 from enum import StrEnum
-from src.core._shered.pagination import ListOutputMeta, ListOutput
+from src.core._shered.domain.pagination import ListOutputMeta, ListOutput
 from src import config
 
 class GenreFilterByType(StrEnum):

@@ -1,5 +1,5 @@
 from src.core.category.application.use_cases.list_category import ListCategory, ListCategoryRequest, ListCategoryResponse, CategoryOutput
-from src.core._shered.pagination import ListOutputMeta
+from src.core._shered.domain.pagination import ListOutputMeta
 from src.core.category.domain.category import Category
 from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 import pytest

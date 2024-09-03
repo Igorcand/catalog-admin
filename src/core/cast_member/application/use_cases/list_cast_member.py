@@ -4,7 +4,7 @@ from src.core.cast_member.application.use_cases.exceptions import InvalidCastMem
 from src.core.cast_member.domain.cast_member_repository import CastMemberRepository
 from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
 from enum import StrEnum
-from src.core._shered.pagination import ListOutputMeta, ListOutput
+from src.core._shered.domain.pagination import ListOutputMeta, ListOutput
 from src import config
 
 class CastMemberFilterByType(StrEnum):

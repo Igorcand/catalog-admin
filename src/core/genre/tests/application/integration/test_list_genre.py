@@ -3,7 +3,7 @@ from src.core.category.infra.in_memory_category_repository import InMemoryCatego
 from src.core.genre.infra.in_memory_genre_repository import InMemoryGenreRepository
 from src.core.genre.domain.genre import Genre
 from src.core.genre.application.use_cases.list_genre import ListGenre, GenreOutput
-from src.core._shered.pagination import ListOutputMeta
+from src.core._shered.domain.pagination import ListOutputMeta
 import pytest
 
 @pytest.mark.genre

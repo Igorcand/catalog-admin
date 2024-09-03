@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from src.core.category.domain.category import Category
 from src.core.category.domain.category_repository import CategoryRepository
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
-from src.core._shered.pagination import ListOutputMeta, ListOutput
+from src.core._shered.domain.pagination import ListOutputMeta, ListOutput
 from src import config
 from enum import StrEnum
 

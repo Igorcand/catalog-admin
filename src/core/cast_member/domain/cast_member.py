@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 import uuid
 from uuid import UUID
-from src.core._shered.entity import Entity
+from src.core._shered.domain.entity import Entity
 
 class CastMemberType(StrEnum):
     ACTOR = "ACTOR"

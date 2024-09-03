@@ -3,7 +3,7 @@ from src.core.genre.application.use_cases.list_genre import ListGenre, GenreOutp
 from src.core.genre.domain.genre_repository import GenreRepository
 from src.core.genre.domain.genre import Genre
 from unittest.mock import create_autospec
-from src.core._shered.pagination import ListOutputMeta
+from src.core._shered.domain.pagination import ListOutputMeta
 import pytest
 
 @pytest.mark.genre

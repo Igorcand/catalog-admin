@@ -9,7 +9,7 @@ from src.core.cast_member.application.use_cases.list_cast_member import (
     ListCastMemberResponse,
 )
 from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
-from src.core._shered.pagination import ListOutputMeta
+from src.core._shered.domain.pagination import ListOutputMeta
 
 
 @pytest.mark.cast_member

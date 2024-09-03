@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from uuid import UUID, uuid4
-from src.core._shered.entity import Entity
+from src.core._shered.domain.entity import Entity
 
 @dataclass
 class Category(Entity):

@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from uuid import UUID, uuid4
 from typing import Set
-from src.core._shered.entity import Entity
+from src.core._shered.domain.entity import Entity
 
 @dataclass
 class Genre(Entity):
