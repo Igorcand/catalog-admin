@@ -8,7 +8,10 @@ from src.django_project.genre_app.repository import DjangoORMGenreRepository
 from src.django_project.cast_member_app.repository import DjangoORMCastMemberRepository
 from src.django_project.video_app.repository import DjangoORMVideoRepository
 from src.core.video.application.use_cases.create_video_without_media import CreateVideoWithoutMedia
-from src.core.video.application.use_cases.exceptions import RelatedEntitiesNotFound, InvalidVideo
+from src.core.video.application.use_cases.exceptions import RelatedEntitiesNotFound, InvalidVideo, VideoNotFound
+from uuid import UUID
+from src.core.video.application.use_cases.upload_video import UploadVideo
+from src.core._shered.infrastructure.storage.local_storage import LocalStorage
 
 
 class VideoViewSet(viewsets.ViewSet):
@@ -29,4 +32,30 @@ class VideoViewSet(viewsets.ViewSet):
         return Response(
             status=HTTP_201_CREATED,
             data=CreateVideoWithoutMediaOutputSerializer(instance=output).data
+        )
+
+    def partial_update(self, request: Request, pk: UUID = None) -> Response:
+        file = request.FILES['video_file']
+        content = file.read()
+        content_type = file.content_type
+
+        upload_video = UploadVideo(
+            repository=DjangoORMVideoRepository(), 
+            storage_service=LocalStorage()
+        )
+
+        try:
+            upload_video.execute(
+                input=UploadVideo.Input(
+                    video_id=pk,
+                    file_name=file.name,
+                    content=content,
+                    content_type=content_type
+                )
+            )
+        except VideoNotFound as err:
+            return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
+        
+        return Response(
+            status=HTTP_200_OK,
         )
