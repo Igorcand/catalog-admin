@@ -14,7 +14,7 @@ def video() -> Video:
         description="A test video",
         launch_year=2022,
         duration=Decimal("120.5"),
-        published=False,
+        opened=False,
         rating=Rating.AGE_12,
         categories={uuid4()},
         genres={uuid4()},
@@ -38,14 +38,14 @@ class TestVideoEntity:
             description="A test video",
             launch_year=2022,
             duration=Decimal("120.5"),
-            published=False,
+            opened=False,
             rating=Rating.AGE_12,
             categories={uuid4()},
             genres={uuid4()},
             cast_members={uuid4()},
-            banner=ImageMedia("", "banner.jpg", "path/to/banner"),
+            banner=ImageMedia("banner.jpg", "path/to/banner"),
             thumbnail=None,  # Testing None value for an optional attribute
-            trailer=AudioVideoMedia("", "trailer.mp4", "raw_path", "encoded_path", MediaStatus.COMPLETED),
+            trailer=AudioVideoMedia("trailer.mp4", "raw_path", "encoded_path", MediaStatus.COMPLETED),
         )
         assert video.notification.has_errors is False
 

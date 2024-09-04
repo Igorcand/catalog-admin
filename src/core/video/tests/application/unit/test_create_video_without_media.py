@@ -190,7 +190,7 @@ class TestCreateVideoWithoutMedia:
                 description="A test video",
                 launch_year=2022,
                 duration=Decimal("120.5"),
-                published=False,
+                opened=False,
                 rating=Rating.AGE_12,
                 categories={movie_category.id},
                 genres={action_genre.id},
