@@ -11,8 +11,9 @@ class Video(Entity):
     description: str 
     launch_year: int 
     duration: Decimal
-    published: bool
     rating: Rating 
+    opened: bool
+    published: bool = field(default=False, init=False)
 
     categories: set[UUID]
     genres: set[UUID]

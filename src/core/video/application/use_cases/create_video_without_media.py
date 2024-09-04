@@ -71,7 +71,7 @@ class CreateVideoWithoutMedia:
                 description=input.description,
                 launch_year=input.launch_year,
                 duration=input.duration,
-                published=False,
+                opened=False,
                 rating=input.rating,
                 categories=input.categories,
                 genres=input.genres,
