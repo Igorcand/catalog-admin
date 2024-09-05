@@ -75,17 +75,16 @@ class TestSaveVideo:
 
         assert VideoORM.objects.count() == 1
 
-        video_model = VideoORM.objects.get(id=video.id)
+        video_model = video_repository.get_by_id(id=video.id)
         assert video_model.id           == video.id
         assert video_model.title        == video.title
         assert video_model.description  == video.description
         assert video_model.launch_year  == video.launch_year
         assert video_model.duration     == video.duration
-        assert video_model.rating       == str(Rating.AGE_12)
+        assert Rating(video_model.rating)       == Rating.AGE_12
         assert video_model.opened       == video.opened
         assert video_model.published    == video.published
         
-    
     def test_saves_video_in_database_with_related_entities(
             self, 
             video,
@@ -116,7 +115,7 @@ class TestSaveVideo:
         assert video_model.description  == video.description
         assert video_model.launch_year  == video.launch_year
         assert video_model.duration     == video.duration
-        assert video_model.rating       == str(Rating.AGE_12)
+        assert Rating(video_model.rating)       == Rating.AGE_12
         assert video_model.opened       == video.opened
         assert video_model.published    == video.published
         
@@ -159,14 +158,14 @@ class TestGetGenre:
         assert VideoORM.objects.count() == 1
 
         video_model = VideoORM.objects.get(id=video.id)
-        assert video_model.id           == video.id
-        assert video_model.title        == video.title
-        assert video_model.description  == video.description
-        assert video_model.launch_year  == video.launch_year
-        assert video_model.duration     == video.duration
-        assert video_model.rating       == str(Rating.AGE_12)
-        assert video_model.opened       == video.opened
-        assert video_model.published    == video.published
+        assert video_model.id             == video.id
+        assert video_model.title          == video.title
+        assert video_model.description    == video.description
+        assert video_model.launch_year    == video.launch_year
+        assert video_model.duration       == video.duration
+        assert Rating(video_model.rating) == Rating.AGE_12
+        assert video_model.opened         == video.opened
+        assert video_model.published      == video.published
  
 @pytest.mark.django_db
 @pytest.mark.web_service
@@ -223,12 +222,13 @@ class TestUpdateVideoWithMedia:
         assert VideoORM.objects.count() == 1
 
         video_model = VideoORM.objects.get(id=video.id)
+
         assert video_model.id           == video.id
         assert video_model.title        == video.title
         assert video_model.description  == video.description
         assert video_model.launch_year  == video.launch_year
         assert video_model.duration     == video.duration
-        assert video_model.rating       == str(Rating.AGE_12)
+        assert Rating(video_model.rating)       == Rating.AGE_12
         assert video_model.opened       == video.opened
         assert video_model.published    == video.published
 
@@ -247,11 +247,11 @@ class TestUpdateVideoWithMedia:
         )
         video_repository.update(update_video)
 
-        genre_model_uptaded = video_repository.get_by_id(id=update_video.id)
+        genre_model_uptaded = VideoORM.objects.get(id=update_video.id)
         assert genre_model_uptaded.id == video.id
         assert genre_model_uptaded.title == "Sample Video updated"
         assert genre_model_uptaded.launch_year == 2023
-        assert genre_model_uptaded.rating == str(Rating.AGE_14)
+        assert Rating(genre_model_uptaded.rating) == Rating.AGE_14
         
 @pytest.mark.django_db
 @pytest.mark.web_service
@@ -280,7 +280,7 @@ class TestGetVideo:
         assert video_model.description  == video.description
         assert video_model.launch_year  == video.launch_year
         assert video_model.duration     == video.duration
-        assert video_model.rating       == str(Rating.AGE_12)
+        assert Rating(video_model.rating)       == Rating.AGE_12
         assert video_model.opened       == video.opened
         assert video_model.published    == video.published
 

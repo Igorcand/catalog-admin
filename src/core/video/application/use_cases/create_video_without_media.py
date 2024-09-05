@@ -2,6 +2,7 @@ from decimal import Decimal
 from uuid import UUID 
 from dataclasses import dataclass
 from src.core.video.domain.video import Video
+from src.core.video.domain.value_objects import Rating
 from src.core.video.application.use_cases.exceptions import InvalidVideo, RelatedEntitiesNotFound
 from src.core.video.domain.video_repository import VideoRepository
 from src.core.category.domain.category_repository import CategoryRepository
@@ -18,7 +19,7 @@ class CreateVideoWithoutMedia:
         description: str
         launch_year: int
         duration: Decimal
-        rating: str
+        rating: Rating
         categories: set[UUID]
         genres: set[UUID]
         cast_members: set[UUID]
@@ -72,7 +73,7 @@ class CreateVideoWithoutMedia:
                 launch_year=input.launch_year,
                 duration=input.duration,
                 opened=False,
-                rating=input.rating,
+                rating=Rating(input.rating),
                 categories=input.categories,
                 genres=input.genres,
                 cast_members=input.cast_members,

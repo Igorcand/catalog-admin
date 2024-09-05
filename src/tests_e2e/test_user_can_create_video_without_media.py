@@ -16,7 +16,7 @@ class TestCreateVIdeoWithoutMedia:
                 "description": "video description",
                 "launch_year": 2024,
                 "duration": 120.5,
-                "rating": "AGE 12",
+                "rating": "AGE_12",
                 "categories": [],
                 "genres": [],
                 "cast_members": []
@@ -65,7 +65,7 @@ class TestCreateVIdeoWithoutMedia:
                 "description": "video description",
                 "launch_year": 2024,
                 "duration": 120.5,
-                "rating": "AGE 12",
+                "rating": "AGE_12",
                 "categories": [created_category_id],
                 "genres": [created_genre_id],
                 "cast_members": [created_cast_member_id]

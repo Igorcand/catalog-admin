@@ -11,13 +11,13 @@ class MediaStatus(Enum):
 
 @unique
 class Rating(Enum):
-    ER = auto()
-    L = auto()
-    AGE_10 = auto()
-    AGE_12 = auto()
-    AGE_14 = auto()
-    AGE_16 = auto()
-    AGE_19 = auto()
+    ER = "ER"
+    L = "L"
+    AGE_10 = "AGE_10"
+    AGE_12 = "AGE_12"
+    AGE_14 = "AGE_14"
+    AGE_16 = "AGE_16"
+    AGE_18 = "AGE_18"
 
 @dataclass(frozen=True)
 class ImageMedia:

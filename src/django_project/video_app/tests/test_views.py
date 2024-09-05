@@ -1,5 +1,5 @@
 import pytest 
-from uuid import uuid4
+from uuid import uuid4, UUID
 from decimal import Decimal
 from src.django_project.video_app.repository import DjangoORMVideoRepository
 from src.core.video.domain.video import Video
@@ -147,3 +147,44 @@ class TestDeleteAPI:
         url = f"/api/videos/{video.id}/"
         response = APIClient().delete(url) 
         assert response.status_code == HTTP_204_NO_CONTENT
+
+@pytest.mark.django_db
+@pytest.mark.web_service
+class TestCreateAPI:
+    def test_when_request_data_is_valid_then_create_genre(self):
+
+        url = "/api/videos/"
+        data = {
+            "title": "A sample video",
+            "description": "video description",
+            "launch_year": 2024,
+            "duration": "120.50",
+            "rating": "AGE_12",
+            "categories": [],
+            "genres": [],
+            "cast_members": []
+        }
+        response = APIClient().post(url, data=data, format="json")
+
+        assert response.status_code == HTTP_201_CREATED
+        assert response.data["id"]
+
+        repository = DjangoORMVideoRepository()
+        saved_video = repository.get_by_id(response.data["id"])
+
+        assert saved_video == Video(
+            id=UUID(response.data["id"]),
+            title="A sample video",
+            description="video description",
+            launch_year=2024,
+            duration=Decimal("120.5"),
+            opened=False,
+            rating=Rating.AGE_12,
+            categories=set(),
+            genres=set(),
+            cast_members=set(),
+        )
+
+
+#TODO: TestUpdateAPI, create (Pesquisar como simular o envio de um arquivo nos tests)
+#TODO: TestUpdateAPI e2e (Pesquisar como simular o envio de um arquivo nos tests)

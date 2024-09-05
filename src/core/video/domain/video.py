@@ -39,6 +39,9 @@ class Video(Entity):
         if self.duration < 0:
             self.notification.add_error("duration cannot be negative")
         
+        if not self.rating in Rating:
+            self.notification.add_error("type must be a valid Rating: ER, L, AGE_10, AGE_12, AGE_14, AGE_16, AGE_18")
+        
         if self.notification.has_errors:
             raise ValueError(self.notification.messages)
     
