@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 from src.core._shered.domain.entity import Entity
 from uuid import UUID
-from src.core.video.domain.value_objects import Rating, ImageMedia, AudioVideoMedia
+from src.core.video.domain.value_objects import Rating, ImageMedia, AudioVideoMedia, MediaStatus
 
 
 @dataclass
@@ -55,6 +55,15 @@ class Video(Entity):
 
         self.validate()
     
+    def publish(self) -> None:
+        if not self.video:
+            self.notification.add_error("Video media is required to publish the video")
+        elif self.video.status != MediaStatus.COMPLETED:
+            self.notification.add_error("Video must be fully processed to be published")
+
+        self.published = True
+        self.validate()
+    
     def add_category(self, category_id: UUID) -> None:
         self.categories.add(category_id)
         self.validate()
@@ -83,7 +92,7 @@ class Video(Entity):
         self.trailer = trailer
         self.validate()
     
-    def update_video(self, video: AudioVideoMedia) -> None:
+    def update_video_media(self, video: AudioVideoMedia) -> None:
         self.video = video
         self.validate()
 

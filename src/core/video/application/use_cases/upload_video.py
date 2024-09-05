@@ -48,6 +48,6 @@ class UploadVideo:
             status=MediaStatus.PENDING
         )
 
-        video.update_video(audio_video_media)
+        video.update_video_media(audio_video_media)
 
         self.repository.update(video)

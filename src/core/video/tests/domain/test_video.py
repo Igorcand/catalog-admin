@@ -51,27 +51,27 @@ class TestVideoEntity:
         assert video.notification.has_errors is False
 
 
-#class TestPublish:
-#    def test_publish_video_without_media(self, video: Video) -> None:
-#        with pytest.raises(ValueError, match="Video media is required to publish the video"):
-#            video.publish()
-#
-#    def test_publish_video_with_pending_media(self, video: Video) -> None:
-#        video.video = AudioVideoMedia(
-#            name="video.mp4",
-#            raw_location="raw_path",
-#            encoded_location="",
-#            status=MediaStatus.PROCESSING,
-#        )
-#        with pytest.raises(ValueError, match="Video must be fully processed to be published"):
-#            video.publish()
-#
-#    def test_publish_video_with_completed_media(self, video: Video) -> None:
-#        video.video = AudioVideoMedia(
-#            name="video.mp4",
-#            raw_location="raw_path",
-#            encoded_location="encoded_path",
-#            status=MediaStatus.COMPLETED,
-#        )
-#        video.publish()
-#        assert video.published is True
+class TestPublish:
+    def test_publish_video_without_media(self, video: Video) -> None:
+        with pytest.raises(ValueError, match="Video media is required to publish the video"):
+            video.publish()
+
+    def test_publish_video_with_pending_media(self, video: Video) -> None:
+        video.video = AudioVideoMedia(
+            name="video.mp4",
+            raw_location="raw_path",
+            encoded_location="",
+            status=MediaStatus.PROCESSING,
+        )
+        with pytest.raises(ValueError, match="Video must be fully processed to be published"):
+            video.publish()
+
+    def test_publish_video_with_completed_media(self, video: Video) -> None:
+        video.video = AudioVideoMedia(
+            name="video.mp4",
+            raw_location="raw_path",
+            encoded_location="encoded_path",
+            status=MediaStatus.COMPLETED,
+        )
+        video.publish()
+        assert video.published is True
