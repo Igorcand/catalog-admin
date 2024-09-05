@@ -105,20 +105,15 @@ class TestRetrieveAPI():
         genre_repository.save(genre_romance) 
         genre_repository.save(genre_drama) 
 
-        url = f"/api/categories/{genre_drama.id}/"
+        url = f"/api/genres/{genre_drama.id}/"
         response = APIClient().get(url)
 
-        expected_data = {
-            "data": {
-                "id": str(genre_drama.id),
-                "name": genre_drama.name,
-                "is_active": genre_drama.is_active,
-                "categories": genre_drama.categories
-            }
-            
-        }
-        #assert response.status_code == HTTP_200_OK
-        #assert response.data == expected_data
+        assert response.status_code == HTTP_200_OK
+        assert response.data["data"]["id"] == str(genre_drama.id)
+        assert response.data["data"]["name"] == genre_drama.name
+        assert response.data["data"]["is_active"] is True
+        assert response.data["data"]["categories"] == []
+        
 
     def test_return_404_when_not_exists(self):
         url = f"/api/genres/{uuid4()}/"
