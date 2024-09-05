@@ -41,15 +41,15 @@ class DjangoORMVideoRepository(VideoRepository):
                     status = video.video.status,
                 )
 
-                video_model.title=video.title,
-                video_model.description=video.description,
-                video_model.launch_year=video.launch_year,
-                video_model.opened=video.opened,
-                video_model.duration=video.duration,
-                video_model.rating=video.rating,
-                video_model.published=video.published,
+                VideoORM.objects.filter(id=video.id).update(
+                    title       = video.title,
+                    description = video.description,
+                    launch_year = video.launch_year,
+                    opened      = video.opened,
+                    duration    = video.duration,
+                    rating      = video.rating,
+                )
         
-                video_model.save()
     
     def list(self) -> list[Video]:
         return [
@@ -65,9 +65,9 @@ class VideoModelMapper:
             description=video.description,
             launch_year=video.launch_year,
             duration=video.duration,
+            rating=video.rating,
             opened=False,
             published=video.published,
-            rating=video.rating,
         )
 
         video_model.categories.set(video.categories)
@@ -83,7 +83,8 @@ class VideoModelMapper:
             description=video.description,
             launch_year=video.launch_year,
             duration=video.duration,
-            published=video.published,
+            opened=video.opened,
+            #published=video.published,
             rating=video.rating,
             categories={category.id for category in video.categories.all()},
             genres={genre.id for genre in video.genres.all()},
