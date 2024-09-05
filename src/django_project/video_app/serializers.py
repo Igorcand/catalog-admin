@@ -48,3 +48,6 @@ class RetrieveVideoInputSerializer(serializers.Serializer):
 
 class RetrieveVideoOutputSerializer(serializers.Serializer):
     data = VideoOutputSerializer(source="*")
+
+class DeleteVideoInputSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
