@@ -42,3 +42,9 @@ class VideoOutputSerializer(serializers.Serializer):
 class ListOutputSerializer(serializers.Serializer):
     data = VideoOutputSerializer(many=True)
     meta = ListOutputMetaSerializer()
+
+class RetrieveVideoInputSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+
+class RetrieveVideoOutputSerializer(serializers.Serializer):
+    data = VideoOutputSerializer(source="*")
