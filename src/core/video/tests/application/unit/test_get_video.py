@@ -13,16 +13,16 @@ from unittest.mock import create_autospec
 class TestGetVideo:
     def test_get_video_not_existing_should_error(self):
         
-        repository = create_autospec(VideoRepository)
-        repository.get_by_id.return_value = None
-        use_case = GetVideo(repository=repository)
+        mock_repository = create_autospec(VideoRepository)
+        mock_repository.get_by_id.return_value = None
+        use_case = GetVideo(repository=mock_repository)
         
         with pytest.raises(VideoNotFound) as exc_info:
             use_case.execute(GetVideo.Input(id=uuid4()))
         
     def test_get_exisiting_video_should_success(self):
         
-        repository = create_autospec(VideoRepository)
+        mock_repository = create_autospec(VideoRepository)
         video = Video(
             title="Sample Video",
             description="A test video",
@@ -34,8 +34,8 @@ class TestGetVideo:
             genres=set(),
             cast_members=set(),
         )
-        repository.get_by_id.return_value = video
-        use_case = GetVideo(repository=repository)
+        mock_repository.get_by_id.return_value = video
+        use_case = GetVideo(repository=mock_repository)
         output = use_case.execute(GetVideo.Input(id=video.id))
 
         assert output == GetVideo.Output(
@@ -52,6 +52,8 @@ class TestGetVideo:
             cast_members=set()
 
         )
+
+        mock_repository.get_by_id.assert_called_once_with(video.id)
         
         
     
