@@ -1,6 +1,7 @@
 import pytest 
 from uuid import uuid4, UUID
 from decimal import Decimal
+from django.core.files.uploadedfile import SimpleUploadedFile
 from src.django_project.video_app.repository import DjangoORMVideoRepository
 from src.core.video.domain.video import Video
 from src.core.video.domain.value_objects import Rating, AudioVideoMedia, MediaStatus
@@ -151,7 +152,7 @@ class TestDeleteAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestCreateAPI:
-    def test_when_request_data_is_valid_then_create_genre(self):
+    def test_when_request_data_is_valid_then_create_video(self):
 
         url = "/api/videos/"
         data = {
@@ -185,6 +186,32 @@ class TestCreateAPI:
             cast_members=set(),
         )
 
+@pytest.mark.django_db
+@pytest.mark.web_service
+class TestPartialUpdateVideoAPI:
+    def test_when_send_video_and_update_partial_video(self):
 
-#TODO: TestUpdateAPI, create (Pesquisar como simular o envio de um arquivo nos tests)
-#TODO: TestUpdateAPI e2e (Pesquisar como simular o envio de um arquivo nos tests)
+        video_repository = DjangoORMVideoRepository()
+        video = Video(
+            title="Sample Video",
+            description="A test video",
+            launch_year=2022,
+            duration=Decimal("120.5"),
+            opened=False,
+            rating=Rating.AGE_12,
+            categories=set(),
+            genres=set(),
+            cast_members=set(),
+        )
+
+        video_repository.save(video) 
+
+        url = f"/api/videos/{video.id}/"
+
+        mp4_file = SimpleUploadedFile("test.mp4", b"fake_mp4_content", content_type="video/mp4")
+
+        data = {"video_file": mp4_file}
+        response = APIClient().patch(url, data=data, format="multipart")
+
+        assert response.status_code == HTTP_200_OK
+        
