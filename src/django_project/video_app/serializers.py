@@ -20,3 +20,25 @@ class CreateVideoWithoutMediaInputSerializer(serializers.Serializer):
 
 class CreateVideoWithoutMediaOutputSerializer(serializers.Serializer):
     id = serializers.UUIDField()
+
+class ListOutputMetaSerializer(serializers.Serializer):
+    current_page = serializers.IntegerField()
+    per_page = serializers.IntegerField()
+    total = serializers.IntegerField()
+
+class VideoOutputSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    title = serializers.CharField(max_length=255)
+    description = serializers.CharField(max_length=1024)
+    launch_year = serializers.IntegerField()
+    duration = serializers.DecimalField(max_digits=10000, decimal_places=2)
+    rating= serializers.CharField() 
+    opened = serializers.BooleanField()
+    published = serializers.BooleanField()
+    categories = serializers.ListField(child=serializers.UUIDField())
+    genres = serializers.ListField(child=serializers.UUIDField())
+    cast_members = serializers.ListField(child=serializers.UUIDField())
+
+class ListOutputSerializer(serializers.Serializer):
+    data = VideoOutputSerializer(many=True)
+    meta = ListOutputMetaSerializer()
