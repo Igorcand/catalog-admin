@@ -70,4 +70,50 @@ class TestListAPI:
         assert response.data["data"][1]["cast_members"] == []
 
 
+@pytest.mark.django_db
+@pytest.mark.web_service
+class TestRetrieveAPI():
+    def test_when_id_is_invalid_return_400(self) -> None:
+        url = f"/api/videos/159761298546/"
+        response = APIClient().get(url)
+
+        assert response.status_code == HTTP_400_BAD_REQUEST
+
+    def test_return_video_when_exists(self):
+        video_repository = DjangoORMVideoRepository()
+        video = Video(
+            title="Sample Video",
+            description="A test video",
+            launch_year=2022,
+            duration=Decimal("120.5"),
+            opened=False,
+            rating=Rating.AGE_12,
+            categories=set(),
+            genres=set(),
+            cast_members=set(),
+        )
+        video_repository.save(video) 
+
+        url = f"/api/videos/{video.id}/"
+        response = APIClient().get(url)
+
+        assert response.status_code == HTTP_200_OK
+
+        assert response.data["data"]["id"] == str(video.id)
+        assert response.data["data"]["title"] == "Sample Video"
+        assert response.data["data"]["description"] == "A test video"
+        assert response.data["data"]["launch_year"] == 2022
+        assert response.data["data"]["duration"] == "120.50"
+        assert response.data["data"]["rating"] == str(Rating.AGE_12)
+        assert response.data["data"]["opened"] is False
+        assert response.data["data"]["published"] is False
+        assert response.data["data"]["categories"] == []
+        assert response.data["data"]["genres"] == []
+        assert response.data["data"]["cast_members"] == []
+
+    def test_return_404_when_not_exists(self):
+        url = f"/api/videos/{uuid4()}/"
+        response = APIClient().get(url)
+
+        assert response.status_code == HTTP_404_NOT_FOUND
 
