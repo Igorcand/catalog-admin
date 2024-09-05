@@ -10,6 +10,7 @@ from uuid import uuid4
 import pytest
 from src.core.video.application.use_cases.exceptions import VideoNotFound
 
+@pytest.mark.video
 class TestUploadVideo:
     def test_when_video_does_not_exist_then_raise_error(self):
         video_repository = InMemoryVideoRepository()

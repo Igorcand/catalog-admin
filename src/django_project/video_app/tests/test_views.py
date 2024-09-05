@@ -69,7 +69,6 @@ class TestListAPI:
         assert response.data["data"][1]["genres"] == []
         assert response.data["data"][1]["cast_members"] == []
 
-
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestRetrieveAPI():

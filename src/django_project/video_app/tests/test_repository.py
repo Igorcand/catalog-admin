@@ -50,7 +50,7 @@ def video(movie_category, action_genre, actor_cast_member) -> Video:
 
 
 @pytest.mark.django_db
-@pytest.mark.video
+@pytest.mark.web_service
 class TestSaveVideo:
     def test_saves_video_in_database_without_related_entities(
             self, 
@@ -253,8 +253,6 @@ class TestUpdateVideoWithMedia:
         assert genre_model_uptaded.launch_year == 2023
         assert genre_model_uptaded.rating == str(Rating.AGE_14)
         
-
-
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestGetVideo:    

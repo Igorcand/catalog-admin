@@ -21,6 +21,7 @@ def video() -> Video:
         cast_members={uuid4()},
     )
 
+@pytest.mark.video
 class TestVideoEntity:
     def test_valid_video(self, video: Video) -> None:
         video.validate()

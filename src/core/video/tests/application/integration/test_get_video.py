@@ -9,7 +9,6 @@ from src.core.video.domain.video import Video
 from src.core.video.application.use_cases.get_video import GetVideo
 from src.core.video.application.use_cases.exceptions import VideoNotFound
 
-
 @pytest.mark.video
 class TestGetVideo:
     def test_get_video_not_existing_should_error(self):

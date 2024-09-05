@@ -7,8 +7,6 @@ from src.core.video.domain.video import Video
 from src.core.video.application.use_cases.delete_video import DeleteVideo
 from src.core.video.application.use_cases.exceptions import VideoNotFound
 
-
-
 @pytest.mark.video
 class TestDeleteVideo:
     def test_delete_video_not_existing_should_error(self):
