@@ -117,3 +117,34 @@ class TestRetrieveAPI():
 
         assert response.status_code == HTTP_404_NOT_FOUND
 
+@pytest.mark.django_db
+@pytest.mark.web_service
+class TestDeleteAPI:
+    def test_when_video_does_not_exist_then_raise_404(self):
+        url = f"/api/videos/{uuid4()}/"
+        response = APIClient().delete(url)
+        assert response.status_code == HTTP_404_NOT_FOUND
+    
+    def test_when_pk_is_invalid_then_raise_400(self):
+        url = f"/api/videos/9348561054612806/"
+        response = APIClient().delete(url)
+        assert response.status_code == HTTP_400_BAD_REQUEST
+    
+    def test_delete_video_from_repository(self):
+        
+        video_repository = DjangoORMVideoRepository()
+        video = Video(
+            title="Sample Video",
+            description="A test video",
+            launch_year=2022,
+            duration=Decimal("120.5"),
+            opened=False,
+            rating=Rating.AGE_12,
+            categories=set(),
+            genres=set(),
+            cast_members=set(),
+        )
+        video_repository.save(video) 
+        url = f"/api/videos/{video.id}/"
+        response = APIClient().delete(url) 
+        assert response.status_code == HTTP_204_NO_CONTENT
