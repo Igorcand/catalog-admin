@@ -2,7 +2,8 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 from src.core._shered.domain.entity import Entity
 from uuid import UUID
-from src.core.video.domain.value_objects import Rating, ImageMedia, AudioVideoMedia, MediaStatus
+from src.core.video.domain.value_objects import Rating, ImageMedia, AudioVideoMedia, MediaStatus, MediaType
+from src.core.video.domain.events.event import AudioVideoMediaUpdated
 
 
 @dataclass
@@ -95,4 +96,11 @@ class Video(Entity):
     def update_video_media(self, video: AudioVideoMedia) -> None:
         self.video = video
         self.validate()
+        self.dispatch(
+            AudioVideoMediaUpdated(
+                aggregate_id=self.id,
+                file_path=video.raw_location,
+                media_type=MediaType.VIDEO
+            )
+        )
 

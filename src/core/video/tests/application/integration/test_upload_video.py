@@ -1,6 +1,6 @@
 from src.core.video.domain.video_repository import VideoRepository
 from src.core.video.domain.video import Video
-from src.core.video.domain.value_objects import Rating, AudioVideoMedia, MediaStatus
+from src.core.video.domain.value_objects import Rating, AudioVideoMedia, MediaStatus, MediaType
 from decimal import Decimal
 from src.core.video.infra.in_memory_video_repository import InMemoryVideoRepository
 from src.core.video.application.use_cases.upload_video import UploadVideo
@@ -72,7 +72,8 @@ class TestUploadVideo:
             name="video.mp4",
             raw_location=f"videos/{video.id}/video.mp4",
             encoded_location="",
-            status=MediaStatus.PENDING
+            status=MediaStatus.PENDING,
+            media_type=MediaType.VIDEO
         )
     
     

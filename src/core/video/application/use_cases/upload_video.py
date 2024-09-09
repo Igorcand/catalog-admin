@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from src.core.video.domain.video_repository import VideoRepository
 from src.core.video.application.use_cases.exceptions import VideoNotFound
-from src.core.video.domain.value_objects import AudioVideoMedia, MediaStatus
+from src.core.video.domain.value_objects import AudioVideoMedia, MediaStatus, MediaType
 from src.core._shered.infrastructure.storage.abstract_storage_service import AbstractStorageService
 
 
@@ -45,7 +45,8 @@ class UploadVideo:
             name=input.file_name,
             raw_location=str(file_path),
             encoded_location="",
-            status=MediaStatus.PENDING
+            status=MediaStatus.PENDING,
+            media_type=MediaType.VIDEO
         )
 
         video.update_video_media(audio_video_media)

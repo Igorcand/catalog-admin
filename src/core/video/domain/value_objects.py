@@ -19,6 +19,11 @@ class Rating(Enum):
     AGE_16 = "AGE_16"
     AGE_18 = "AGE_18"
 
+@unique
+class MediaType(Enum):
+    VIDEO = "VIDEO"
+    TRAILER = "TRAILER"
+
 @dataclass(frozen=True)
 class ImageMedia:
     name: str
@@ -30,3 +35,4 @@ class AudioVideoMedia:
     raw_location: str
     encoded_location: str
     status: MediaStatus
+    media_type: MediaType

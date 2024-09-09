@@ -2,7 +2,7 @@ import pytest
 from uuid import uuid4
 from decimal import Decimal
 from src.core.video.domain.video import Video
-from src.core.video.domain.value_objects import Rating, AudioVideoMedia, MediaStatus
+from src.core.video.domain.value_objects import Rating, AudioVideoMedia, MediaStatus, MediaType
 
 from src.django_project.video_app.repository import DjangoORMVideoRepository
 from src.django_project.category_app.repository import DjangoORMCategoryRepository
@@ -243,7 +243,7 @@ class TestUpdateVideoWithMedia:
             categories=set(),
             genres=set(),
             cast_members=set(),
-            video = AudioVideoMedia("trailer.mp4", "raw_path", "encoded_path", MediaStatus.COMPLETED),
+            video = AudioVideoMedia("trailer.mp4", "raw_path", "encoded_path", MediaStatus.COMPLETED, MediaType.VIDEO),
         )
         video_repository.update(update_video)
 
