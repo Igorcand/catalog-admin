@@ -5,6 +5,8 @@ from src.core.video.domain.video_repository import VideoRepository
 from src.core.video.application.use_cases.exceptions import VideoNotFound
 from src.core.video.domain.value_objects import AudioVideoMedia, MediaStatus, MediaType
 from src.core._shered.infrastructure.storage.abstract_storage_service import AbstractStorageService
+from src.core.video.application.events.integration_events import AudioVideoMediaUpdatedIntegrationEvent
+from src.core._shered.events.abstract_message_bus import AbstractMessageBus
 
 
 class UploadVideo:
@@ -23,10 +25,12 @@ class UploadVideo:
     def __init__(
             self, 
             repository: VideoRepository,
-            storage_service: AbstractStorageService
+            storage_service: AbstractStorageService,
+            message_bus: AbstractMessageBus
         ):
         self.repository = repository
         self.storage_service = storage_service
+        self.message_bus = message_bus
     
     def execute(self, input: Input) -> Output:
         video = self.repository.get_by_id(id=input.video_id)
@@ -52,3 +56,11 @@ class UploadVideo:
         video.update_video_media(audio_video_media)
 
         self.repository.update(video)
+        #Após a transação terminar (principal/commit)
+        #disparo evento de integração
+        self.message_bus.handle([
+            AudioVideoMediaUpdatedIntegrationEvent(
+                resource_id=f"{video.id}.{MediaType.VIDEO}",
+                file_path = str(file_path)
+            )
+        ]) 

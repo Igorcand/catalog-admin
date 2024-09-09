@@ -5,6 +5,8 @@ from decimal import Decimal
 from src.core.video.infra.in_memory_video_repository import InMemoryVideoRepository
 from src.core.video.application.use_cases.upload_video import UploadVideo
 from src.core._shered.infrastructure.storage.abstract_storage_service import AbstractStorageService
+from src.core._shered.events.abstract_message_bus import AbstractMessageBus
+from src.core.video.application.events.integration_events import AudioVideoMediaUpdatedIntegrationEvent
 from unittest.mock import create_autospec
 from uuid import uuid4
 import pytest
@@ -15,10 +17,12 @@ class TestUploadVideo:
     def test_when_video_does_not_exist_then_raise_error(self):
         video_repository = InMemoryVideoRepository()
         mock_storage = create_autospec(AbstractStorageService)
+        mock_message_bus = create_autospec(AbstractMessageBus)
 
         use_case = UploadVideo(
             repository=video_repository,
-            storage_service=mock_storage
+            storage_service=mock_storage,
+            message_bus=mock_message_bus
         ) 
         
         input = UploadVideo.Input(
@@ -45,10 +49,12 @@ class TestUploadVideo:
             )
         video_repository = InMemoryVideoRepository(videos=[video])
         mock_storage = create_autospec(AbstractStorageService)
+        mock_message_bus = create_autospec(AbstractMessageBus)
 
         use_case = UploadVideo(
             repository=video_repository,
-            storage_service=mock_storage
+            storage_service=mock_storage,
+            message_bus=mock_message_bus
         ) 
         
         input = UploadVideo.Input(
@@ -65,6 +71,15 @@ class TestUploadVideo:
             file_path=f"videos/{video.id}/video.mp4",
             content=b"video_content",
             content_type="video/mp4",
+        )
+
+        mock_message_bus.handle.assert_called_once_with(
+            [
+                AudioVideoMediaUpdatedIntegrationEvent(
+                    resource_id=f"{video.id}.{MediaType.VIDEO}",
+                    file_path=f"videos/{video.id}/video.mp4"
+                )
+            ]
         )
 
         video_from_repo = video_repository.get_by_id(video.id)
