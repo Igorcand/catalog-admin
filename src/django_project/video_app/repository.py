@@ -64,7 +64,6 @@ class DjangoORMVideoRepository(VideoRepository):
 class VideoModelMapper:
     @staticmethod
     def to_model(video: Video) -> VideoORM:
-        print(f'to_model -> video.rating = {video.rating} -- type = {type(video.rating)}')
         video_model = VideoORM.objects.create(
             id=video.id,
             title=video.title,
@@ -83,7 +82,6 @@ class VideoModelMapper:
         return video_model
     
     def to_entity(video: VideoORM) -> Video:
-        print(f'to_entity -> video.rating = {video.rating} -- type = {type(video.rating)}')
         return Video(
             id=video.id,
             title=video.title,
