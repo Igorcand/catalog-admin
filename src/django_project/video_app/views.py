@@ -17,6 +17,7 @@ from src.core.video.application.use_cases.exceptions import RelatedEntitiesNotFo
 from uuid import UUID
 from src.core.video.application.use_cases.upload_video import UploadVideo
 from src.core._shered.infrastructure.storage.local_storage import LocalStorage
+from src.core._shered.events.message_bus import MessageBus
 
 
 class VideoViewSet(viewsets.ViewSet):
@@ -86,7 +87,8 @@ class VideoViewSet(viewsets.ViewSet):
 
         upload_video = UploadVideo(
             repository=DjangoORMVideoRepository(), 
-            storage_service=LocalStorage()
+            storage_service=LocalStorage(),
+            message_bus=MessageBus()
         )
 
         try:
