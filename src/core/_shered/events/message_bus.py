@@ -21,10 +21,8 @@ class MessageBus(AbstractMessageBus):
         }
 
     def handle(self, events: list[Event]) -> None:
-        print(f"Handling events: {events}")
         for event in events:
             handlers = self.handlers.get(type(event), [])
-            print(f"handlers by type {type(event)}: {handlers}")
             for handler in handlers:
                 try:
                     handler.handle(event)

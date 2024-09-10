@@ -8,5 +8,4 @@ class PublishAudioVideoMediaUpdatedHandler(Handler):
         self.event_dispatcher = event_dispatcher
 
     def handle(self, event: AudioVideoMediaUpdatedIntegrationEvent) -> None:
-        print(f'PublishAudioVideoMediaUpdatedHandler -> Publising event: {event}')
         self.event_dispatcher.dispatch(event)

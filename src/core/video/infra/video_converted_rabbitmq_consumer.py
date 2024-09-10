@@ -32,7 +32,6 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
             "status": "COMPLETED"
         }
         """
-        print(f'Received message consuming queue: {message}') 
 
         try:
             #body payload
@@ -62,7 +61,6 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
                 status=status,
             )
 
-            print(f'Calling use case with input: {process_audio_video_media_input}')
             use_case = ProcessAudioVideoMedia(video_repository=self.video_repository)
             use_case.execute(request=process_audio_video_media_input)
 

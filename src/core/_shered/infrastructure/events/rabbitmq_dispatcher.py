@@ -27,7 +27,6 @@ class RabbitMQDispatcher(EventDispatcher):
             body=json.dumps(asdict(event))
         )
 
-        print(f'RabbitMQ Dispatched event = {event}')
 
     def close(self):
         self.connection.close()
