@@ -76,7 +76,7 @@ class TestUploadVideo:
         mock_message_bus.handle.assert_called_once_with(
             [
                 AudioVideoMediaUpdatedIntegrationEvent(
-                    resource_id=f"{video.id}.{MediaType.VIDEO}",
+                    resource_id=f"{video.id}.{MediaType.VIDEO.value}",
                     file_path=f"videos/{video.id}/video.mp4"
                 )
             ]
