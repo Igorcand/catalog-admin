@@ -35,46 +35,10 @@ class DjangoORMVideoRepository(VideoRepository):
             return None
         else:
             with transaction.atomic():
-                if media_type == MediaType.VIDEO.value or media_type == MediaType.TRAILER.value:
-                    AudioVideoMediaORM.objects.filter(id=video_model.id).delete()
-                    if media_type == MediaType.VIDEO.value:
-                        attribute = video.video
-                    else:
-                        attribute = video.trailer
-
-                    audio_video_media = AudioVideoMediaORM.objects.create(
-                        name = attribute.name,
-                        raw_location = attribute.raw_location,
-                        encoded_location = attribute.encoded_location,
-                        status = attribute.status.name,
-                        media_type = attribute.media_type.name
-                    ) 
-
-                    if media_type == MediaType.VIDEO.value:
-                        video_model.video = audio_video_media
-                    elif media_type == MediaType.TRAILER.value:
-                        video_model.trailer = audio_video_media
-
+                if media_type in [MediaType.VIDEO.value, MediaType.TRAILER.value]:
+                    self._update_audio_video_media(video, video_model, media_type)
                 else:
-                    ImageMediaORM.objects.filter(id=video_model.id).delete()
-                    if media_type == MediaType.BANNER.value:
-                        attribute = video.banner
-                    elif media_type == MediaType.THUMBNAIL.value:
-                        attribute = video.thumbnail
-                    elif media_type == MediaType.THUMBNAIL_HALF.value:
-                        attribute = video.thumbnail_half
-                        
-                    image_media = ImageMediaORM.objects.create(
-                        name = attribute.name,
-                        raw_location = attribute.location
-                    )
-
-                    if media_type == MediaType.BANNER.value:
-                        video_model.banner = image_media
-                    elif media_type == MediaType.THUMBNAIL.value:
-                        video_model.thumbnail = image_media
-                    elif media_type == MediaType.THUMBNAIL_HALF.value:
-                        video_model.thumbnail_half = image_media
+                    self._update_image_media(video, video_model, media_type)
 
                 video_model.categories.set(video.categories)
                 video_model.genres.set(video.genres)
@@ -96,6 +60,45 @@ class DjangoORMVideoRepository(VideoRepository):
         return [
             VideoModelMapper.to_entity(video_model)
          for video_model in VideoORM.objects.all()]
+    
+    def _update_audio_video_media(self, video: Video, video_model, media_type):
+        AudioVideoMediaORM.objects.filter(id=video_model.id).delete()
+
+        attribute = video.video if media_type == MediaType.VIDEO.value else video.trailer
+        audio_video_media = AudioVideoMediaORM.objects.create(
+            name=attribute.name,
+            raw_location=attribute.raw_location,
+            encoded_location=attribute.encoded_location,
+            status=attribute.status.name,
+            media_type=attribute.media_type.name
+        )
+
+        if media_type == MediaType.VIDEO.value:
+            video_model.video = audio_video_media
+        elif media_type == MediaType.TRAILER.value:
+            video_model.trailer = audio_video_media
+
+    def _update_image_media(self, video: Video, video_model, media_type):
+        ImageMediaORM.objects.filter(id=video_model.id).delete()
+
+        attribute = {
+            MediaType.BANNER.value: video.banner,
+            MediaType.THUMBNAIL.value: video.thumbnail,
+            MediaType.THUMBNAIL_HALF.value: video.thumbnail_half,
+        }.get(media_type)
+
+        image_media = ImageMediaORM.objects.create(
+            name=attribute.name,
+            raw_location=attribute.location
+        )
+
+        if media_type == MediaType.BANNER.value:
+            video_model.banner = image_media
+        elif media_type == MediaType.THUMBNAIL.value:
+            video_model.thumbnail = image_media
+        elif media_type == MediaType.THUMBNAIL_HALF.value:
+            video_model.thumbnail_half = image_media
+
 
 class VideoModelMapper:
     @staticmethod
