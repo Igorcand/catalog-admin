@@ -104,3 +104,24 @@ class Video(Entity):
             )
         )
 
+    def process(self, status, encoded_location):
+        if status == MediaStatus.COMPLETED:
+            self.video = AudioVideoMedia(
+                name=self.video.name,
+                raw_location=self.video.raw_location,
+                media_type=MediaType.VIDEO,
+                encoded_location=encoded_location,
+                status=MediaStatus.COMPLETED
+            )
+
+            self.publish()
+        else:
+            self.video = AudioVideoMedia(
+                name=self.video.name,
+                raw_location=self.video.raw_location,
+                media_type=MediaType.VIDEO,
+                encoded_location="",
+                status=MediaStatus.ERROR
+            )
+        self.validate()
+
