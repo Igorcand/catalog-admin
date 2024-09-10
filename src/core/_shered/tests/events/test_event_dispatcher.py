@@ -28,5 +28,3 @@ class TestEventDispatcher:
             mock_connection.channel.assert_called_once()
             mock_channel.queue_declare.assert_called_once_with(queue="videos.new")
             mock_channel.basic_publish.assert_called_once()
-
-            print("Teste de RabbitMQDispatcher foi executado com sucesso.")
