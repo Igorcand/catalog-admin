@@ -4,10 +4,10 @@ from enum import Enum, auto, unique
 
 @unique
 class MediaStatus(Enum):
-    PENDING = auto()
-    PROCESSING = auto()
-    COMPLETED = auto()
-    ERROR = auto()
+    PENDING = "PENDING"
+    PROCESSING = "PROCESSING"
+    COMPLETED = "COMPLETED"
+    ERROR = "ERROR"
 
 @unique
 class Rating(Enum):

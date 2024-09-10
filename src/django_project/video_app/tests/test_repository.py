@@ -223,14 +223,14 @@ class TestUpdateVideoWithMedia:
 
         video_model = VideoORM.objects.get(id=video.id)
 
-        assert video_model.id           == video.id
-        assert video_model.title        == video.title
-        assert video_model.description  == video.description
-        assert video_model.launch_year  == video.launch_year
-        assert video_model.duration     == video.duration
-        assert Rating(video_model.rating)       == Rating.AGE_12
-        assert video_model.opened       == video.opened
-        assert video_model.published    == video.published
+        assert video_model.id              == video.id
+        assert video_model.title           == video.title
+        assert video_model.description     == video.description
+        assert video_model.launch_year     == video.launch_year
+        assert video_model.duration        == video.duration
+        assert Rating(video_model.rating)  == Rating.AGE_12
+        assert video_model.opened          == video.opened
+        assert video_model.published       == video.published
 
         update_video = Video(
             id = video.id,
@@ -248,10 +248,13 @@ class TestUpdateVideoWithMedia:
         video_repository.update(update_video)
 
         genre_model_uptaded = VideoORM.objects.get(id=update_video.id)
-        assert genre_model_uptaded.id == video.id
-        assert genre_model_uptaded.title == "Sample Video updated"
-        assert genre_model_uptaded.launch_year == 2023
-        assert Rating(genre_model_uptaded.rating) == Rating.AGE_14
+        assert genre_model_uptaded.id                          == video.id
+        assert genre_model_uptaded.title                       == "Sample Video updated"
+        assert genre_model_uptaded.launch_year                 == 2023
+        assert Rating(genre_model_uptaded.rating)              == Rating.AGE_14
+        assert MediaStatus(genre_model_uptaded.video.status)   == MediaStatus.COMPLETED
+        assert MediaType(genre_model_uptaded.video.media_type) == MediaType.VIDEO
+
         
 @pytest.mark.django_db
 @pytest.mark.web_service
