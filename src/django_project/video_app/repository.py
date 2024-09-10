@@ -61,7 +61,7 @@ class DjangoORMVideoRepository(VideoRepository):
             VideoModelMapper.to_entity(video_model)
          for video_model in VideoORM.objects.all()]
     
-    def _update_audio_video_media(self, video: Video, video_model, media_type):
+    def _update_audio_video_media(self, video: Video, video_model: VideoORM, media_type: MediaType):
         AudioVideoMediaORM.objects.filter(id=video_model.id).delete()
 
         attribute = video.video if media_type == MediaType.VIDEO.value else video.trailer
@@ -78,7 +78,7 @@ class DjangoORMVideoRepository(VideoRepository):
         elif media_type == MediaType.TRAILER.value:
             video_model.trailer = audio_video_media
 
-    def _update_image_media(self, video: Video, video_model, media_type):
+    def _update_image_media(self, video: Video, video_model: VideoORM, media_type: MediaType):
         ImageMediaORM.objects.filter(id=video_model.id).delete()
 
         attribute = {

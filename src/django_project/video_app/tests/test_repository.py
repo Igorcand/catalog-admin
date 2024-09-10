@@ -2,7 +2,7 @@ import pytest
 from uuid import uuid4
 from decimal import Decimal
 from src.core.video.domain.video import Video
-from src.core.video.domain.value_objects import Rating, AudioVideoMedia, MediaStatus, MediaType
+from src.core.video.domain.value_objects import Rating, AudioVideoMedia, MediaStatus, MediaType, ImageMedia
 
 from src.django_project.video_app.repository import DjangoORMVideoRepository
 from src.django_project.category_app.repository import DjangoORMCategoryRepository
@@ -179,7 +179,7 @@ class TestDeleteVideo:
 
         assert VideoORM.objects.count() == 0
     
-    def test_delete_genre_existing_should_return_success(self):
+    def test_delete_video_existing_should_return_success(self):
         video = Video(
             title="Sample Video",
             description="A test video",
@@ -202,7 +202,7 @@ class TestDeleteVideo:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestUpdateVideoWithMedia:    
-    def test_update_genre_existing_should_return_success(self):
+    def test_update_video_existing_should_return_success(self):
         video = Video(
             title="Sample Video",
             description="A test video",
@@ -254,6 +254,63 @@ class TestUpdateVideoWithMedia:
         assert Rating(genre_model_uptaded.rating)              == Rating.AGE_14
         assert MediaStatus(genre_model_uptaded.video.status)   == MediaStatus.COMPLETED
         assert MediaType(genre_model_uptaded.video.media_type) == MediaType.VIDEO
+
+@pytest.mark.django_db
+@pytest.mark.web_service
+class TestUpdateVideoWithImageMedia:    
+    def test_update_video_with_image_media_existing_should_return_success(self):
+        video = Video(
+            title="Sample Video",
+            description="A test video",
+            launch_year=2022,
+            duration=Decimal("120.5"),
+            opened=False,
+            rating=Rating.AGE_12,
+            categories=set(),
+            genres=set(),
+            cast_members=set(),
+        )
+        video_repository = DjangoORMVideoRepository() 
+
+        assert VideoORM.objects.count() == 0
+        video_repository.save(video)
+
+        assert VideoORM.objects.count() == 1
+
+        video_model = VideoORM.objects.get(id=video.id)
+
+        assert video_model.id              == video.id
+        assert video_model.title           == video.title
+        assert video_model.description     == video.description
+        assert video_model.launch_year     == video.launch_year
+        assert video_model.duration        == video.duration
+        assert Rating(video_model.rating)  == Rating.AGE_12
+        assert video_model.opened          == video.opened
+        assert video_model.published       == video.published
+
+        update_video = Video(
+            id = video.id,
+            title="Sample Video updated",
+            description="A test video",
+            launch_year=int(2023),
+            duration=Decimal("120.5"),
+            opened=False,
+            rating=Rating.AGE_14,
+            categories=set(),
+            genres=set(),
+            cast_members=set(),
+            banner = ImageMedia(name="banner.png", location="raw_path"),
+        )
+        video_repository.update(update_video, MediaType.BANNER.value)
+
+        genre_model_uptaded = VideoORM.objects.get(id=update_video.id)
+        assert genre_model_uptaded.id                          == video.id
+        assert genre_model_uptaded.title                       == "Sample Video updated"
+        assert genre_model_uptaded.launch_year                 == 2023
+        assert Rating(genre_model_uptaded.rating)              == Rating.AGE_14
+        assert genre_model_uptaded.banner.name ==  "banner.png"
+        assert genre_model_uptaded.banner.raw_location ==  "raw_path"
+
 
         
 @pytest.mark.django_db

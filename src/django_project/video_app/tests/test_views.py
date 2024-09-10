@@ -214,4 +214,30 @@ class TestPartialUpdateVideoAPI:
         response = APIClient().patch(url, data=data, format="multipart")
 
         assert response.status_code == HTTP_200_OK
+    
+    def test_when_send_banner_and_update_partial_video(self):
+
+        video_repository = DjangoORMVideoRepository()
+        video = Video(
+            title="Sample Video",
+            description="A test video",
+            launch_year=2022,
+            duration=Decimal("120.5"),
+            opened=False,
+            rating=Rating.AGE_12,
+            categories=set(),
+            genres=set(),
+            cast_members=set(),
+        )
+
+        video_repository.save(video) 
+
+        url = f"/api/videos/{video.id}/"
+
+        png_file = SimpleUploadedFile("test.png", b"fake_png_content", content_type="mage/png")
+
+        data = {"file": png_file, 'media_type': "BANNER"}
+        response = APIClient().patch(url, data=data, format="multipart")
+
+        assert response.status_code == HTTP_200_OK
         
