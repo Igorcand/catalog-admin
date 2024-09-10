@@ -17,6 +17,7 @@ class UploadVideo:
         file_name: str
         content: bytes
         content_type: str # video/mp4 
+        media_type: MediaType
 
     @dataclass
     class Output:
@@ -37,6 +38,9 @@ class UploadVideo:
 
         if video is None:
             raise VideoNotFound(f"Video with {input.video_id} not found") 
+        
+        if not input.media_type in MediaType:
+            raise ValueError("media_type must be a valid Media Type: VIDEO or TRAILER")
 
         file_path = Path("videos") / str(video.id) / input.file_name
         self.storage_service.store(
@@ -50,7 +54,7 @@ class UploadVideo:
             raw_location=str(file_path),
             encoded_location="",
             status=MediaStatus.PENDING,
-            media_type=MediaType.VIDEO
+            media_type=MediaType(input.media_type)
         )
 
         video.update_video_media(audio_video_media)
@@ -60,7 +64,7 @@ class UploadVideo:
         #disparo evento de integração
         self.message_bus.handle([
             AudioVideoMediaUpdatedIntegrationEvent(
-                resource_id=f"{video.id}.{MediaType.VIDEO.value}",
+                resource_id=f"{video.id}.{audio_video_media.media_type.value}",
                 file_path = str(file_path)
             )
         ]) 

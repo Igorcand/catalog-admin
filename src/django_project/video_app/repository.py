@@ -43,7 +43,10 @@ class DjangoORMVideoRepository(VideoRepository):
                     media_type = video.video.media_type.name
                 )  if video.video else None
 
-                video_model.video = audio_video_media
+                if audio_video_media.media_type == MediaType.VIDEO.value:
+                    video_model.video = audio_video_media
+                elif audio_video_media.media_type == MediaType.TRAILER.value:
+                    video_model.trailer = audio_video_media
 
                 video_model.categories.set(video.categories)
                 video_model.genres.set(video.genres)

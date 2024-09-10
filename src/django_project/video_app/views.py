@@ -102,9 +102,12 @@ class VideoViewSet(viewsets.ViewSet):
                     video_id=pk,
                     file_name=file.name,
                     content=content,
-                    content_type=content_type
+                    content_type=content_type,
+                    media_type=media_type
                 )
             )
+        except ValueError as err:
+            return Response(data={"error": str(err)}, status=HTTP_400_BAD_REQUEST)
         except VideoNotFound as err:
             return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)
         

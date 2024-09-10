@@ -103,7 +103,7 @@ class Video(Entity):
             AudioVideoMediaUpdated(
                 aggregate_id=self.id,
                 file_path=video.raw_location,
-                media_type=MediaType.VIDEO
+                media_type=self.video.media_type
             )
         )
 

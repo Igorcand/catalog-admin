@@ -30,6 +30,7 @@ class TestUploadVideo:
                 file_name="video.mp4",
                 content=b"video_content",
                 content_type="video/mp4",
+                media_type=MediaType.VIDEO
             )
         
         with pytest.raises(VideoNotFound) as exc:
@@ -62,6 +63,7 @@ class TestUploadVideo:
                 file_name="video.mp4",
                 content=b"video_content",
                 content_type="video/mp4",
+                media_type=MediaType.VIDEO
             )
         
 
