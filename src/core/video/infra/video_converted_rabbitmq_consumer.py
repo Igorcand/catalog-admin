@@ -22,12 +22,12 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
     def on_message(self, message):
         """
         {
-            'error': '',
-            'video': {
-                'resource_id': 'dd57b20c-b6a0-4525-ba05-5bdcaf6baad9.VIDEO',
-                'encoded_video_folder': '/path/to/encoded/video'
+            "error": "",
+            "video": {
+                "resource_id": "24846fe1-6218-46bb-96a8-d6d4534e0885.VIDEO",
+                "encoded_video_folder": "/path/to/encoded/video"
             },
-            'status': 'COMPLETED'
+            "status": "COMPLETED"
         }
         """
         print(f'Received message consuming queue: {message}') 
@@ -39,11 +39,11 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
             #tratamento de erro
             error_message = message['error']
             if error_message:
-                agregate_id_raw, _ = message['message']['resource_id'].split('.')
+                agregate_id_raw, _ = message['video']['resource_id'].split('.')
                 logger.error(f"Error processing video {agregate_id_raw}: {error_message}")
             
             #serialização do evento
-            agregate_id_raw, media_type_raw = message['message']['resource_id'].split('.')
+            agregate_id_raw, media_type_raw = message['video']['resource_id'].split('.')
             agregate_id = UUID(agregate_id_raw)
             media_type = MediaType(media_type_raw)
             encoded_location = message['video']['encoded_video_folder']
@@ -54,7 +54,7 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
                 video_id = agregate_id,
                 encoded_location=encoded_location,
                 media_type=media_type,
-                status=status
+                status=status,
             )
 
             print(f'Calling use case with input: {process_audio_video_media_input}')

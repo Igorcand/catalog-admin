@@ -56,6 +56,7 @@ class DjangoORMVideoRepository(VideoRepository):
                     description = video.description,
                     launch_year = video.launch_year,
                     opened      = video.opened,
+                    published   = video.published,
                     duration    = video.duration,
                     rating      = video.rating.name,
                 )      

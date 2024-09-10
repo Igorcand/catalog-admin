@@ -61,9 +61,10 @@ class Video(Entity):
             self.notification.add_error("Video media is required to publish the video")
         elif self.video.status != MediaStatus.COMPLETED:
             self.notification.add_error("Video must be fully processed to be published")
-
-        self.published = True
-        self.validate()
+        
+        if not self.notification.has_errors:
+            self.published = True
+            self.validate()
     
     def add_category(self, category_id: UUID) -> None:
         self.categories.add(category_id)

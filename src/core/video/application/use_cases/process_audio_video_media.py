@@ -9,9 +9,9 @@ class ProcessAudioVideoMedia:
 
     @dataclass
     class Input:
-        encoded_location: str 
-        video_id = UUID
+        video_id: UUID
         status: MediaStatus
+        encoded_location: str 
         media_type: MediaType
 
     def __init__(self, video_repository: VideoRepository) -> None:

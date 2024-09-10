@@ -60,7 +60,7 @@ class UploadVideo:
         #disparo evento de integração
         self.message_bus.handle([
             AudioVideoMediaUpdatedIntegrationEvent(
-                resource_id=f"{video.id}.{MediaType.VIDEO}",
+                resource_id=f"{video.id}.{MediaType.VIDEO.value}",
                 file_path = str(file_path)
             )
         ]) 
