@@ -50,7 +50,7 @@ class TestVideoEntity:
         )
         assert video.notification.has_errors is False
 
-
+@pytest.mark.video
 class TestPublish:
     def test_publish_video_without_media(self, video: Video) -> None:
         with pytest.raises(ValueError, match="Video media is required to publish the video"):
@@ -78,6 +78,7 @@ class TestPublish:
         video.publish()
         assert video.published is True
 
+@pytest.mark.video
 class TestUpdateVideoMedia:
     def test_update_video_and_dispatch_event(self, video: Video) -> None:
         media = AudioVideoMedia(
@@ -97,3 +98,34 @@ class TestUpdateVideoMedia:
                 media_type=MediaType.VIDEO
             )
         ]
+
+
+@pytest.mark.video
+class TestVideoProcess:
+    def test_try_process_video_with_status_process_should_error(self, video: Video) -> None:
+        video.video = AudioVideoMedia(
+            name="video.mp4",
+            raw_location="raw_path",
+            encoded_location="",
+            status=MediaStatus.PROCESSING,
+            media_type=MediaType.VIDEO
+        )
+        video.process(MediaStatus.PROCESSING, "") 
+        assert video.video == AudioVideoMedia(
+                name=video.video.name,
+                raw_location=video.video.raw_location,
+                media_type=MediaType.VIDEO,
+                encoded_location="",
+                status=MediaStatus.ERROR
+            )
+
+    def test_try_process_video_with_status_completed_should_success(self, video: Video) -> None:
+        video.video = AudioVideoMedia(
+            name="video.mp4",
+            raw_location="raw_path",
+            encoded_location="",
+            status=MediaStatus.COMPLETED,
+            media_type=MediaType.VIDEO
+        )
+        video.process(MediaStatus.COMPLETED, "") 
+        assert video.published == True
