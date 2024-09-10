@@ -51,3 +51,7 @@ class RetrieveVideoOutputSerializer(serializers.Serializer):
 
 class DeleteVideoInputSerializer(serializers.Serializer):
     id = serializers.UUIDField()
+
+class UploadVideoSerializer(serializers.Serializer):
+    video_file = serializers.FileField()
+    media_type = serializers.CharField()

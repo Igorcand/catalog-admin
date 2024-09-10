@@ -4,7 +4,7 @@ from decimal import Decimal
 from django.core.files.uploadedfile import SimpleUploadedFile
 from src.django_project.video_app.repository import DjangoORMVideoRepository
 from src.core.video.domain.video import Video
-from src.core.video.domain.value_objects import Rating, AudioVideoMedia, MediaStatus
+from src.core.video.domain.value_objects import Rating
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.test import APIClient
 
@@ -210,7 +210,7 @@ class TestPartialUpdateVideoAPI:
 
         mp4_file = SimpleUploadedFile("test.mp4", b"fake_mp4_content", content_type="video/mp4")
 
-        data = {"video_file": mp4_file}
+        data = {"video_file": mp4_file, 'media_type': "VIDEO"}
         response = APIClient().patch(url, data=data, format="multipart")
 
         assert response.status_code == HTTP_200_OK

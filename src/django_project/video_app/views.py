@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
-from src.django_project.video_app.serializers import CreateVideoWithoutMediaInputSerializer, CreateVideoWithoutMediaOutputSerializer, ListOutputSerializer, RetrieveVideoInputSerializer, RetrieveVideoOutputSerializer, DeleteVideoInputSerializer
+from src.django_project.video_app.serializers import CreateVideoWithoutMediaInputSerializer, CreateVideoWithoutMediaOutputSerializer, ListOutputSerializer, RetrieveVideoInputSerializer, RetrieveVideoOutputSerializer, DeleteVideoInputSerializer, UploadVideoSerializer
 from src.django_project.category_app.repository import DjangoORMCategoryRepository
 from src.django_project.genre_app.repository import DjangoORMGenreRepository
 from src.django_project.cast_member_app.repository import DjangoORMCastMemberRepository
@@ -81,9 +81,14 @@ class VideoViewSet(viewsets.ViewSet):
         )
 
     def partial_update(self, request: Request, pk: UUID = None) -> Response:
-        file = request.FILES['video_file']
+        serializer = UploadVideoSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+        file = serializer.validated_data['video_file']
         content = file.read()
         content_type = file.content_type
+        media_type = serializer.validated_data['media_type']
 
         upload_video = UploadVideo(
             repository=DjangoORMVideoRepository(), 
