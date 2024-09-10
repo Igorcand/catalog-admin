@@ -8,16 +8,18 @@ from src.core._shered.events.abstract_consumer import AbstractConsumer
 from src.core.video.application.use_cases.process_audio_video_media import ProcessAudioVideoMedia
 from src.core.video.domain.value_objects import MediaType, MediaStatus
 from src.django_project.video_app.repository import DjangoORMVideoRepository
+from src.core.video.domain.video_repository import VideoRepository
 
 logger = logging.getLogger(__name__)
 
 class VideoConvertedRabbitMQConsumer(AbstractConsumer):
     # python manage.py startconsumer
-    def __init__(self, host='localhost', queue='videos.converted'):
+    def __init__(self, video_repository: VideoRepository, host='localhost', queue='videos.converted'):
         self.host = host
         self.queue = queue 
         self.connection = None 
         self.channel = None 
+        self.video_repository = video_repository
     
     def on_message(self, message):
         """
@@ -41,6 +43,9 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
             if error_message:
                 agregate_id_raw, _ = message['video']['resource_id'].split('.')
                 logger.error(f"Error processing video {agregate_id_raw}: {error_message}")
+                print(f"Error processing video {agregate_id_raw}: {error_message}")
+
+                return 
             
             #serialização do evento
             agregate_id_raw, media_type_raw = message['video']['resource_id'].split('.')
@@ -58,10 +63,10 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
             )
 
             print(f'Calling use case with input: {process_audio_video_media_input}')
-            use_case = ProcessAudioVideoMedia(video_repository=DjangoORMVideoRepository())
+            use_case = ProcessAudioVideoMedia(video_repository=self.video_repository)
             use_case.execute(request=process_audio_video_media_input)
 
-        except:
+        except Exception as e:
             logger.error(f"Error processing payload {message}", exc_info=True)
             return  
 
