@@ -245,7 +245,7 @@ class TestUpdateVideoWithMedia:
             cast_members=set(),
             video = AudioVideoMedia("trailer.mp4", "raw_path", "encoded_path", MediaStatus.COMPLETED, MediaType.VIDEO),
         )
-        video_repository.update(update_video)
+        video_repository.update(update_video, MediaType.VIDEO.value)
 
         genre_model_uptaded = VideoORM.objects.get(id=update_video.id)
         assert genre_model_uptaded.id                          == video.id

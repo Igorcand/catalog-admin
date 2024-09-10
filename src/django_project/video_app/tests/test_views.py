@@ -210,7 +210,7 @@ class TestPartialUpdateVideoAPI:
 
         mp4_file = SimpleUploadedFile("test.mp4", b"fake_mp4_content", content_type="video/mp4")
 
-        data = {"video_file": mp4_file, 'media_type': "VIDEO"}
+        data = {"file": mp4_file, 'media_type': "VIDEO"}
         response = APIClient().patch(url, data=data, format="multipart")
 
         assert response.status_code == HTTP_200_OK

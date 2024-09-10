@@ -23,6 +23,10 @@ class Rating(Enum):
 class MediaType(Enum):
     VIDEO = "VIDEO"
     TRAILER = "TRAILER"
+    THUMBNAIL = "THUMBNAIL"
+    THUMBNAIL_HALF = "THUMBNAIL_HALF"
+    BANNER = "BANNER"
+
 
 @dataclass(frozen=True)
 class ImageMedia:

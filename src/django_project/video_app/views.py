@@ -85,7 +85,7 @@ class VideoViewSet(viewsets.ViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-        file = serializer.validated_data['video_file']
+        file = serializer.validated_data['file']
         content = file.read()
         content_type = file.content_type
         media_type = serializer.validated_data['media_type']

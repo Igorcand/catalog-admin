@@ -66,6 +66,6 @@ class TestVideoConvertedConsumer:
         consumer.on_message(json.dumps(message))
 
         mock_video_repository.get_by_id.assert_called_once_with(video.id)
-        mock_video_repository.update.assert_called_once_with(video)
+        mock_video_repository.update.assert_called_once_with(video, MediaType.VIDEO)
 
 

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from src.core.video.domain.video_repository import VideoRepository
 from src.core.video.application.use_cases.exceptions import VideoNotFound
-from src.core.video.domain.value_objects import AudioVideoMedia, MediaStatus, MediaType
+from src.core.video.domain.value_objects import AudioVideoMedia, MediaStatus, MediaType, ImageMedia
 from src.core._shered.infrastructure.storage.abstract_storage_service import AbstractStorageService
 from src.core.video.application.events.integration_events import AudioVideoMediaUpdatedIntegrationEvent
 from src.core._shered.events.abstract_message_bus import AbstractMessageBus
@@ -40,7 +40,7 @@ class UploadVideo:
             raise VideoNotFound(f"Video with {input.video_id} not found") 
         
         if not input.media_type in MediaType:
-            raise ValueError("media_type must be a valid Media Type: VIDEO or TRAILER")
+            raise ValueError("media_type must be a valid Media Type: VIDEO, TRAILER, BANNER, THUMBNAIL and THUMBNAIL_HALF")
 
         file_path = Path("videos") / str(video.id) / input.file_name
         self.storage_service.store(
@@ -49,22 +49,35 @@ class UploadVideo:
             content_type=input.content_type
         )
 
-        audio_video_media = AudioVideoMedia(
-            name=input.file_name,
-            raw_location=str(file_path),
-            encoded_location="",
-            status=MediaStatus.PENDING,
-            media_type=MediaType(input.media_type)
-        )
-
-        video.update_video_media(audio_video_media)
-
-        self.repository.update(video)
-        #Após a transação terminar (principal/commit)
-        #disparo evento de integração
-        self.message_bus.handle([
-            AudioVideoMediaUpdatedIntegrationEvent(
-                resource_id=f"{video.id}.{audio_video_media.media_type.value}",
-                file_path = str(file_path)
+        if input.media_type == MediaType.VIDEO.value or input.media_type == MediaType.TRAILER.value:
+            audio_video_media = AudioVideoMedia(
+                name=input.file_name,
+                raw_location=str(file_path),
+                encoded_location="",
+                status=MediaStatus.PENDING,
+                media_type=MediaType(input.media_type)
             )
-        ]) 
+
+            video.update_video_media(audio_video_media)
+            self.repository.update(video, input.media_type)
+
+            self.message_bus.handle([
+                AudioVideoMediaUpdatedIntegrationEvent(
+                    resource_id=f"{video.id}.{audio_video_media.media_type.value}",
+                    file_path = str(file_path)
+                )
+            ]) 
+        else:
+            image_media = ImageMedia(
+                name=input.file_name,
+                location=str(file_path),
+            )
+            
+            if input.media_type == MediaType.BANNER.value:
+                video.update_banner(image_media)
+            elif input.media_type == MediaType.THUMBNAIL.value:
+                video.update_thumbnail(image_media) 
+            elif input.media_type == MediaType.THUMBNAIL_HALF.value: 
+                video.update_thumbnail_half(image_media)
+            
+            self.repository.update(video, input.media_type)

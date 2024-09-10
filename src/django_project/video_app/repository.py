@@ -5,6 +5,8 @@ from src.core.video.domain.video import Video
 from src.core.video.domain.value_objects import Rating
 from src.django_project.video_app.models import Video as VideoORM
 from src.django_project.video_app.models import AudioVideoMedia as AudioVideoMediaORM
+from src.django_project.video_app.models import ImageMedia as ImageMediaORM
+
 from src.core.video.domain.value_objects import AudioVideoMedia, MediaType, MediaStatus
 
 class DjangoORMVideoRepository(VideoRepository):
@@ -26,27 +28,53 @@ class DjangoORMVideoRepository(VideoRepository):
     def delete(self, id: UUID) -> None:
         VideoORM.objects.filter(id=id).delete()
 
-    def update(self, video: Video) -> None:
+    def update(self, video: Video, media_type: MediaType) -> None:
         try:
             video_model = VideoORM.objects.get(id=video.id)
         except VideoORM.DoesNotExist:
             return None
         else:
             with transaction.atomic():
-                AudioVideoMediaORM.objects.filter(id=video_model.id).delete()
+                if media_type == MediaType.VIDEO.value or media_type == MediaType.TRAILER.value:
+                    AudioVideoMediaORM.objects.filter(id=video_model.id).delete()
+                    if media_type == MediaType.VIDEO.value:
+                        attribute = video.video
+                    else:
+                        attribute = video.trailer
 
-                audio_video_media = AudioVideoMediaORM.objects.create(
-                    name = video.video.name,
-                    raw_location = video.video.raw_location,
-                    encoded_location = video.video.encoded_location,
-                    status = video.video.status.name,
-                    media_type = video.video.media_type.name
-                )  if video.video else None
+                    audio_video_media = AudioVideoMediaORM.objects.create(
+                        name = attribute.name,
+                        raw_location = attribute.raw_location,
+                        encoded_location = attribute.encoded_location,
+                        status = attribute.status.name,
+                        media_type = attribute.media_type.name
+                    ) 
 
-                if audio_video_media.media_type == MediaType.VIDEO.value:
-                    video_model.video = audio_video_media
-                elif audio_video_media.media_type == MediaType.TRAILER.value:
-                    video_model.trailer = audio_video_media
+                    if media_type == MediaType.VIDEO.value:
+                        video_model.video = audio_video_media
+                    elif media_type == MediaType.TRAILER.value:
+                        video_model.trailer = audio_video_media
+
+                else:
+                    ImageMediaORM.objects.filter(id=video_model.id).delete()
+                    if media_type == MediaType.BANNER.value:
+                        attribute = video.banner
+                    elif media_type == MediaType.THUMBNAIL.value:
+                        attribute = video.thumbnail
+                    elif media_type == MediaType.THUMBNAIL_HALF.value:
+                        attribute = video.thumbnail_half
+                        
+                    image_media = ImageMediaORM.objects.create(
+                        name = attribute.name,
+                        raw_location = attribute.location
+                    )
+
+                    if media_type == MediaType.BANNER.value:
+                        video_model.banner = image_media
+                    elif media_type == MediaType.THUMBNAIL.value:
+                        video_model.thumbnail = image_media
+                    elif media_type == MediaType.THUMBNAIL_HALF.value:
+                        video_model.thumbnail_half = image_media
 
                 video_model.categories.set(video.categories)
                 video_model.genres.set(video.genres)
@@ -111,6 +139,14 @@ class VideoModelMapper:
                 encoded_location=model.video.encoded_location,
                 status=MediaStatus(model.video.status),
                 media_type=MediaType(model.video.media_type),
+            )
+        if model.trailer:
+            video.trailer = AudioVideoMedia(
+                name=model.trailer.name,
+                raw_location=model.trailer.raw_location,
+                encoded_location=model.trailer.encoded_location,
+                status=MediaStatus(model.trailer.status),
+                media_type=MediaType(model.trailer.media_type),
             )
         
         return video

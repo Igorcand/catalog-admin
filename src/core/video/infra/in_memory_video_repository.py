@@ -1,6 +1,7 @@
 from uuid import UUID
 from src.core.video.domain.video_repository import VideoRepository
 from src.core.video.domain.video import Video
+from src.core.video.domain.value_objects import MediaType
 
 
 class InMemoryVideoRepository(VideoRepository):
@@ -23,7 +24,7 @@ class InMemoryVideoRepository(VideoRepository):
     def list(self) -> list[Video]:
         return [video for video in self.videos]
 
-    def update(self, video: Video) -> None:
+    def update(self, video: Video, media_type: MediaType) -> None:
         old_video = self.get_by_id(video.id)
         if old_video:
             self.videos.remove(old_video)

@@ -29,4 +29,4 @@ class ProcessAudioVideoMedia:
         
             video.process(status=request.status, encoded_location=request.encoded_location)
         
-        self.video_repository.update(video)
+        self.video_repository.update(video, request.media_type)

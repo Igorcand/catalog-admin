@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 from src.core.video.domain.video import Video
+from src.core.video.domain.value_objects import MediaType
 
 class VideoRepository(ABC):
     @abstractmethod
@@ -16,7 +17,7 @@ class VideoRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, video: Video) -> None:
+    def update(self, video: Video, media_type: MediaType) -> None:
         raise NotImplementedError
 
     @abstractmethod
