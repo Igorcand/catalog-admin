@@ -335,6 +335,11 @@ password: guest
 # Para começar a consumir a file "videos.converted, rode o comando em outro terminal com o ambiente virtual ativado"
 python manage.py startconsume
 
+--
+
+# Para rodar os teste, rode o comando em terminal com o ambiente virtual ativado"
+pytest
+
 ```
 
 
@@ -360,3 +365,4 @@ python manage.py startconsume
 Igor Cândido Rodrigues
 
 https://www.linkedin.com/in/igorc%C3%A2ndido/
+
