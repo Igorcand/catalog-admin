@@ -335,7 +335,7 @@ password: guest
 
 --
 
-# Para começar a consumir a file "videos.converted, rode o comando em outro terminal com o ambiente virtual ativado"
+# Para começar a consumir a file "videos.converted", rode o comando em outro terminal com o ambiente virtual ativado
 python manage.py startconsume
 
 --
