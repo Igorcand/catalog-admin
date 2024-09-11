@@ -9,3 +9,6 @@ class VideoNotFound(Exception):
 
 class MediaNotFound(Exception):
     pass
+
+class NotSupportedFile(Exception):
+    pass

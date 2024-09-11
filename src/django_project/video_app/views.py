@@ -13,7 +13,7 @@ from src.core.video.application.use_cases.get_video import GetVideo
 from src.core.video.application.use_cases.delete_video import DeleteVideo
 
 
-from src.core.video.application.use_cases.exceptions import RelatedEntitiesNotFound, InvalidVideo, VideoNotFound
+from src.core.video.application.use_cases.exceptions import RelatedEntitiesNotFound, InvalidVideo, VideoNotFound, NotSupportedFile
 from uuid import UUID
 from src.core.video.application.use_cases.upload_video import UploadVideo
 from src.core._shered.infrastructure.storage.local_storage import LocalStorage
@@ -106,7 +106,7 @@ class VideoViewSet(viewsets.ViewSet):
                     media_type=media_type
                 )
             )
-        except ValueError as err:
+        except (ValueError, NotSupportedFile) as err:
             return Response(data={"error": str(err)}, status=HTTP_400_BAD_REQUEST)
         except VideoNotFound as err:
             return Response(data={"error": str(err)}, status=HTTP_404_NOT_FOUND)

@@ -2,8 +2,8 @@ from uuid import UUID
 from dataclasses import dataclass
 from pathlib import Path
 from src.core.video.domain.video_repository import VideoRepository
-from src.core.video.application.use_cases.exceptions import VideoNotFound
-from src.core.video.domain.value_objects import AudioVideoMedia, MediaStatus, MediaType, ImageMedia
+from src.core.video.application.use_cases.exceptions import VideoNotFound, NotSupportedFile
+from src.core.video.domain.value_objects import AudioVideoMedia, MediaStatus, MediaType, ImageMedia, ImageSupportedFileFormat, VideoSupportedFileFormat
 from src.core._shered.infrastructure.storage.abstract_storage_service import AbstractStorageService
 from src.core.video.application.events.integration_events import AudioVideoMediaUpdatedIntegrationEvent
 from src.core._shered.events.abstract_message_bus import AbstractMessageBus
@@ -41,6 +41,14 @@ class UploadVideo:
         
         if not input.media_type in MediaType:
             raise ValueError("media_type must be a valid Media Type: VIDEO, TRAILER, BANNER, THUMBNAIL and THUMBNAIL_HALF")
+
+        file_extension = input.file_name.split('.')[-1].upper()
+        if input.media_type in [MediaType.VIDEO.value, MediaType.TRAILER.value]:
+            if not file_extension in VideoSupportedFileFormat:
+                raise NotSupportedFile("Video extension file must be .mp4")
+        else:
+            if not file_extension in ImageSupportedFileFormat:
+                raise NotSupportedFile("Image extension file must be .png")
 
         file_path = Path("videos") / str(video.id) / input.file_name
         self.storage_service.store(

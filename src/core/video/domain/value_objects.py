@@ -27,6 +27,13 @@ class MediaType(Enum):
     THUMBNAIL_HALF = "THUMBNAIL_HALF"
     BANNER = "BANNER"
 
+@unique
+class VideoSupportedFileFormat(Enum):
+    MP4 = "MP4"
+
+@unique
+class ImageSupportedFileFormat(Enum):
+    PNG = "PNG"
 
 @dataclass(frozen=True)
 class ImageMedia:
