@@ -283,12 +283,80 @@ Nessa imagem abaixo podemos entender como os agregados possuem casos de uso e a 
 ![agregados](https://github.com/Igorcand/catalog-admin/blob/master/assets/agregados.png)
 
 
+## Testes
+Esse projeto foi desenvolvido todo baseado em testes, possuindo mais de 200 testes, dentre eles unitários, integração e end-to-end. 
+
+![tests](https://github.com/Igorcand/catalog-admin/blob/master/assets/tests.png)
+
+Nos testes unitários, sua intenção é testar a menor unidade do sistema, o código. E para isso é bem importante que teste a maior parte de problemas técnicos de implementação possíveis, buscando mitigar ao máximo a possibilidade de um erro de codificação
+
+Testes de integração, nessa camada, você deve buscar executar testes que garantam a integridade com outros componentes como tabelas, arquivos e filas
+
+Já os testes End to End devem buscar testar sua aplicação de ponta a ponta, com um resultado funcional observável. Neste momento a ideia é testar o sistema da forma mais próxima do ambiente produtivo.
+
+![piramide](https://github.com/Igorcand/catalog-admin/blob/master/assets/piramide.png)
+
+## Como rodar esse projeto
+
+```bash
+# clone este repositorio
+git clone https://github.com/Igorcand/catalog-admin
+
+# Entre na pasta
+cd catalog-admin
+
+# Crie um ambiente virtual
+python -m venv venv
+
+# Ative o ambiente virtual
+source venv/bin/activate
+
+# Instale as dependências
+pip install -r requirements.txt
+
+# Execute
+python manage.py runserver
+
+--
+
+# Para rodar o RabbitMQ local, abra outro terminal e rode
+docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+
+#Para acessar o dashboard de mensagens acesse no browser
+http://localhost:15672/
+
+# Faça login com os dados
+login: guest
+password: guest
+
+
+--
+
+# Para começar a consumir a file "videos.converted, rode o comando em outro terminal com o ambiente virtual ativado"
+python manage.py startconsume
+
+```
 
 
 
 
 
 
-tree -I "__pycache__" src
+# Tecnologias Usadas
 
-python manage.py startapp genre_app ./src/django_project/genre_app
+## Back end
+- Python
+- Django
+- Pytest
+
+## Database
+- SQLite
+  
+## Infra
+- RabbitMQ
+
+# Author
+
+Igor Cândido Rodrigues
+
+https://www.linkedin.com/in/igorc%C3%A2ndido/
