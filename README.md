@@ -296,6 +296,9 @@ Já os testes End to End devem buscar testar sua aplicação de ponta a ponta, c
 
 ![piramide](https://github.com/Igorcand/catalog-admin/blob/master/assets/piramide.png)
 
+## API
+Para acessar os endpoints presentes e visualizar os inputs e outputs de cada rota, acesse o link <a href="https://documenter.getpostman.com/view/2763594/2s9Ykt5yuR" target="_blank">link</a>
+
 ## Como rodar esse projeto
 
 ```bash
