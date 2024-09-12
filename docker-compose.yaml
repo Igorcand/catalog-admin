@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Serviço principal
+  app:
+    build: .
+    container_name: app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=src.django_project.settings
+    networks:
+      - rabbitmq_network
+  
+  # Serviço consumer
+  consumer:
+    build: .
+    container_name: consumer
+    command: python manage.py startconsumer
+    volumes:
+      - .:/app
+    depends_on:
+      - rabbitmq
+    networks:
+      - rabbitmq_network
+    restart: always
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - rabbitmq_network
+  
+
+  # Keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.5
+    container_name: keycloak
+    command: start-dev
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/opt/keycloak/data
+    networks:
+      - rabbitmq_network
+
+networks:
+  rabbitmq_network:
+    driver: bridge

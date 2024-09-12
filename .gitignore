@@ -162,3 +162,5 @@ cython_debug/
 #.idea/
 
 .vscode/
+keycloakdb.mv.db
+keycloakdb.trace.db
