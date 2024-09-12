@@ -10,7 +10,7 @@ O cliente dessa aplicação seria um serviço Front-End (que será construido po
 
 Neste pedaço do diagrama C4 abaixo, podemos visualizar a parte que nos importa que é o fluxo desde o FrontEnd consumindo via HTTPS nossa API do CATALOG-ADMIN e a comunicação do CATALOG-ADMIN com o ENCODER via RabbitMQ.
 
-![c4-part](https://github.com/Igorcand/catalog-admin/blob/master/assets/c4-part.png)
+![about](https://github.com/Igorcand/catalog-admin/blob/master/assets/about/c4-part.png)
 
 
 ## Estrutura do repositório
@@ -280,13 +280,26 @@ Portanto, a pasta "django_project" representa toda a aplicação web gerada, com
 
 Nessa imagem abaixo podemos entender como os agregados possuem casos de uso e a aplicação Web acessa esses casos de uso para poder gerar os endpoints.
 
-![agregados](https://github.com/Igorcand/catalog-admin/blob/master/assets/agregados.png)
+![about](https://github.com/Igorcand/catalog-admin/blob/master/assets/about/agregados.png)
 
+## Como rodar esse projeto
+
+```bash
+# clone este repositorio
+git clone https://github.com/Igorcand/catalog-admin
+
+# Entre na pasta
+cd catalog-admin
+
+# Rode os serviços
+docker-compose up --build
+
+```
 
 ## Testes
 Esse projeto foi desenvolvido todo baseado em testes, possuindo mais de 200 testes, dentre eles unitários, integração e end-to-end. 
 
-![tests](https://github.com/Igorcand/catalog-admin/blob/master/assets/tests.png)
+![tests](https://github.com/Igorcand/catalog-admin/blob/master/assets/tests/tests.png)
 
 Nos testes unitários, sua intenção é testar a menor unidade do sistema, o código. E para isso é bem importante que teste a maior parte de problemas técnicos de implementação possíveis, buscando mitigar ao máximo a possibilidade de um erro de codificação
 
@@ -294,10 +307,34 @@ Testes de integração, nessa camada, você deve buscar executar testes que gara
 
 Já os testes End to End devem buscar testar sua aplicação de ponta a ponta, com um resultado funcional observável. Neste momento a ideia é testar o sistema da forma mais próxima do ambiente produtivo.
 
-![piramide](https://github.com/Igorcand/catalog-admin/blob/master/assets/piramide.png)
+![tests](https://github.com/Igorcand/catalog-admin/blob/master/assets/tests/piramide.png)
+
+### Como rodar os testes
+
+```bash
+# Com os containeres rodando, rode o comando
+docker exec -it app bash
+
+# Rode os testes
+pytest
+
+```
 
 ## API
 Para acessar os endpoints presentes e visualizar os inputs e outputs de cada rota, acesse o link <a href="https://documenter.getpostman.com/view/2763594/2s9Ykt5yuR" target="_blank">link</a>
+
+Para melhor visualização das rotas, acesse o endpoint http://127.0.0.1:8000/ para visualizar o swagger do django rest framework
+![api](https://github.com/Igorcand/catalog-admin/blob/master/assets/api/swagger.png)
+
+## RabbitMQ
+Acesse o dashboard do RabbitMQ no endpoint "http://127.0.0.1:15672" e faça login com as credenciais: Username = guest | Password = guest
+
+![rabbitmq](https://github.com/Igorcand/catalog-admin/blob/master/assets/rabbitmq/login.png)
+
+Para visualizar as filas vá na aba "Queues and Stream"
+![rabbitmq](https://github.com/Igorcand/catalog-admin/blob/master/assets/rabbitmq/queues.png)
+
+OBS: Caso não esteja visualizando a fila "videos.new", é necessário que faça uma requisição para a rota http://localhost:8000/api/videos/{video_id}/ no método http PATCH, com o input de midia_type = "VIDEO" ou "TRAILER", porque essa rota irá disparar uma mensagem na fila e caso não exista irá criar
 
 
 ## Autenticação
@@ -364,25 +401,6 @@ Para gerar o token você precisa chamar a rota "http://127.0.0.1:8080/realms/cod
 
 Copie e cole o token gerado nas rotas da aplicação "catalog-admin"
 ![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/output_token.png)
-
-
-## Como rodar esse projeto
-
-```bash
-# clone este repositorio
-git clone https://github.com/Igorcand/catalog-admin
-
-# Entre na pasta
-cd catalog-admin
-
-# Rode os serviços
-docker-compose up --build
-
-```
-
-
-
-
 
 
 # Tecnologias Usadas
