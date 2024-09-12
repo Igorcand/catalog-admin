@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class VideoConvertedRabbitMQConsumer(AbstractConsumer):
     # python manage.py startconsumer
-    def __init__(self, video_repository: VideoRepository, host='localhost', queue='videos.converted'):
+    def __init__(self, video_repository: VideoRepository, host='rabbitmq', queue='videos.converted'):
         self.host = host
         self.queue = queue 
         self.connection = None 
@@ -51,7 +51,8 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
             agregate_id = UUID(agregate_id_raw)
             media_type = MediaType(media_type_raw)
             encoded_location = message['video']['encoded_video_folder']
-            status = MediaStatus(message['status'])
+            status = MediaStatus(
+                message['status'])
 
             #execução do use case
             process_audio_video_media_input = ProcessAudioVideoMedia.Input(
