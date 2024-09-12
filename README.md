@@ -310,6 +310,12 @@ Crie um realm para o projeto com o nome "codeflix"
 
 ![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/realm.png)
 
+Vá na aba "Clients" e clique no boão "Create client"
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/create_client.png)
+
+Crie um client chamado "codeflix-frontend" e aperte "Next" 2 vezes
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/client_frontend.png)
+
 Crie um usuário para você
 
 ![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/create_user.png)
