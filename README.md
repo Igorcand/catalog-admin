@@ -299,6 +299,61 @@ Já os testes End to End devem buscar testar sua aplicação de ponta a ponta, c
 ## API
 Para acessar os endpoints presentes e visualizar os inputs e outputs de cada rota, acesse o link <a href="https://documenter.getpostman.com/view/2763594/2s9Ykt5yuR" target="_blank">link</a>
 
+
+## Autenticação
+### Configuração
+Acesse o dashboard do keycloak no endpoint "http://127.0.0.1:8080" e faça login com as credenciais: Username = admin | Password = Admin
+
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/login.png)
+
+Crie um realm para o projeto com o nome "codeflix"
+
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/realm.png)
+
+Crie um usuário para você
+
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/create_user.png)
+
+Para fins de aprendizagem, pode criar com valores padrão.
+
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/user_admin.png)
+
+Crie role para seu usuário
+
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/roles.png)
+
+Crie a role "admin"
+
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/role_admin.png)
+
+Vá na aba "Users" e clique no seu usuário
+
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/tab_user.png)
+
+Vá na aba "Role mapping" e clique em "Assign role"
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/assign_role.png)
+
+Filtre por "Filter by realm roles" e selecione a role "admin"
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/admin_role_assigned.png)
+
+### Comunicação entre Keycloak e Aplicação principal
+Vá na aba "Realm settings" -> clique no ícone "Keys" -> Clique no botão "Public key" do item "RS256" e copie a chave
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/public_key.png)
+
+Crie um arquivo .env 
+```
+AUTH_PUBLIC_KEY='sua_public_key'
+```
+
+### Gerar token JWT
+Para gerar o token você precisa chamar a rota "http://127.0.0.1:8080/realms/codeflix/protocol/openid-connect/token" com o método http POST, enviando no formato Form Url Encoded passando as informações 
+
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/input_token.png)
+
+Copie e cole o token gerado nas rotas da aplicação "catalog-admin"
+![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/output_token.png)
+
+
 ## Como rodar esse projeto
 
 ```bash
@@ -308,46 +363,8 @@ git clone https://github.com/Igorcand/catalog-admin
 # Entre na pasta
 cd catalog-admin
 
-# Crie um ambiente virtual
-python -m venv venv
-
-# Ative o ambiente virtual
-source venv/bin/activate
-
-# Instale as dependências
-pip install -r requirements.txt
-
-# Execute
-python manage.py runserver
-
---
-
-# Para rodar o RabbitMQ local, abra outro terminal e rode
-docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
-
-#Para acessar o dashboard de mensagens acesse no browser
-http://localhost:15672/
-
-# Faça login com os dados
-login: guest
-password: guest
-
-
---
-
-# Para começar a consumir a file "videos.converted", rode o comando em outro terminal com o ambiente virtual ativado
-python manage.py startconsume
-
---
-
-# Para rodar os teste, rode o comando em terminal com o ambiente virtual ativado"
-pytest
-
-
---
-# Para rodar o keycloak, use o comando
-docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:25.0.5 start-dev
-
+# Rode os serviços
+docker-compose up --build
 
 ```
 
