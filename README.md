@@ -324,6 +324,12 @@ Para fins de aprendizagem, pode criar com valores padrão.
 
 ![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/user_admin.png)
 
+Vá na aba "Credentials" e clique no botão "Set password"
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/user_password.png)
+
+Para fins de aprendizagem, crie a senha como "admin" e desmarque a opção "Temporary"
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/set_password.png)
+
 Crie role para seu usuário
 
 ![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/roles.png)
