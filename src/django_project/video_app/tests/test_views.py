@@ -7,10 +7,13 @@ from src.core.video.domain.video import Video
 from src.core.video.domain.value_objects import Rating
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.test import APIClient
+from unittest.mock import patch
+from src.django_project.video_app.views import VideoViewSet
 
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestListAPI:
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_list_videos(self):
         video_repository = DjangoORMVideoRepository()
         video_1 = Video(
@@ -73,12 +76,14 @@ class TestListAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestRetrieveAPI():
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_when_id_is_invalid_return_400(self) -> None:
         url = f"/api/videos/159761298546/"
         response = APIClient().get(url)
 
         assert response.status_code == HTTP_400_BAD_REQUEST
 
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_return_video_when_exists(self):
         video_repository = DjangoORMVideoRepository()
         video = Video(
@@ -111,6 +116,7 @@ class TestRetrieveAPI():
         assert response.data["data"]["genres"] == []
         assert response.data["data"]["cast_members"] == []
 
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_return_404_when_not_exists(self):
         url = f"/api/videos/{uuid4()}/"
         response = APIClient().get(url)
@@ -120,18 +126,20 @@ class TestRetrieveAPI():
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestDeleteAPI:
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_when_video_does_not_exist_then_raise_404(self):
         url = f"/api/videos/{uuid4()}/"
         response = APIClient().delete(url)
         assert response.status_code == HTTP_404_NOT_FOUND
     
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_when_pk_is_invalid_then_raise_400(self):
         url = f"/api/videos/9348561054612806/"
         response = APIClient().delete(url)
         assert response.status_code == HTTP_400_BAD_REQUEST
     
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_delete_video_from_repository(self):
-        
         video_repository = DjangoORMVideoRepository()
         video = Video(
             title="Sample Video",
@@ -152,6 +160,7 @@ class TestDeleteAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestCreateAPI:
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_when_request_data_is_valid_then_create_video(self):
 
         url = "/api/videos/"
@@ -189,6 +198,7 @@ class TestCreateAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestPartialUpdateVideoAPI:
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_when_send_video_and_update_partial_video(self):
 
         video_repository = DjangoORMVideoRepository()
@@ -215,6 +225,7 @@ class TestPartialUpdateVideoAPI:
 
         assert response.status_code == HTTP_200_OK
     
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_when_send_banner_and_update_partial_video(self):
 
         video_repository = DjangoORMVideoRepository()

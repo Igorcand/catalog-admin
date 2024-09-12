@@ -4,6 +4,8 @@ from src.django_project.category_app.repository import DjangoORMCategoryReposito
 from src.core.category.domain.category import Category
 import pytest 
 from uuid import uuid4, UUID
+from src.django_project.category_app.views import CategoryViewSet
+from unittest.mock import patch
 
 @pytest.fixture
 def category_movie():
@@ -20,7 +22,7 @@ def category_repository() -> DjangoORMCategoryRepository:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestListAPI():
-
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_list_categories(self,category_movie: Category,category_repository: DjangoORMCategoryRepository) -> None:
         category_repository.save(category_movie)
         url = "/api/categories/"
@@ -48,12 +50,14 @@ class TestListAPI():
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestRetrieveAPI():
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_id_is_invalid_return_400(self) -> None:
         url = f"/api/categories/159761298546/"
         response = APIClient().get(url)
 
         assert response.status_code == HTTP_400_BAD_REQUEST
 
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_return_category_when_exists(self, category_movie: Category, category_repository: DjangoORMCategoryRepository):
         category_repository.save(category_movie)
         url = f"/api/categories/{category_movie.id}/"
@@ -71,6 +75,7 @@ class TestRetrieveAPI():
         assert response.status_code == HTTP_200_OK
         assert response.data == expected_data
 
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_return_404_when_not_exists(self):
         url = f"/api/categories/{uuid4()}/"
         response = APIClient().get(url)
@@ -80,6 +85,7 @@ class TestRetrieveAPI():
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestCreateAPI():
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_payload_is_invalid_then_return_400(self) -> None:
         url = f"/api/categories/"
         response = APIClient().post(
@@ -92,6 +98,7 @@ class TestCreateAPI():
 
         assert response.status_code == HTTP_400_BAD_REQUEST
 
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_payload_is_valid_then_create_category_and_return_201(
             self,
             category_repository: DjangoORMCategoryRepository
@@ -117,6 +124,7 @@ class TestCreateAPI():
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestUpdateAPI():
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_payload_is_invalid_then_return_400(self) -> None:
         url = f"/api/categories/123523634/" #UUID invalid
         response = APIClient().put(
@@ -136,6 +144,7 @@ class TestUpdateAPI():
 
             }
 
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_payload_is_valid_then_update_category_and_return_204(
             self,
             category_movie: Category,
@@ -161,6 +170,7 @@ class TestUpdateAPI():
         assert updated_category.description == "Documentary description"
         assert updated_category.is_active is True
 
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_category_does_not_exist_then_return_404(self) -> None:
         url = f"/api/categories/{uuid4()}/"
         response = APIClient().put(
@@ -177,6 +187,7 @@ class TestUpdateAPI():
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestPartialUpdateAPI():
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_id_is_invalid_then_return_400(self) -> None:
         url = f"/api/categories/123523634/" #UUID invalid
         response = APIClient().patch(
@@ -188,6 +199,7 @@ class TestPartialUpdateAPI():
 
         assert response.status_code == HTTP_400_BAD_REQUEST
 
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_payload_is_valid_then_update_partial_category_and_return_204(
             self,
             category_movie: Category,
@@ -211,6 +223,7 @@ class TestPartialUpdateAPI():
         assert updated_category.description == "Description"
         assert updated_category.is_active is True
 
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_category_does_not_exist_then_return_404(self) -> None:
         url = f"/api/categories/{uuid4()}/"
         response = APIClient().put(
@@ -227,18 +240,21 @@ class TestPartialUpdateAPI():
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestDeleteAPI():
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_id_is_invalid_then_return_400(self) -> None:
         url = f"/api/categories/123523634/" #UUID invalid
         response = APIClient().delete(url)
 
         assert response.status_code == HTTP_400_BAD_REQUEST
     
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_category_does_not_exists_then_return_400(self) -> None:
         url = f"/api/categories/{uuid4()}/"
         response = APIClient().delete(url)
 
         assert response.status_code == HTTP_404_NOT_FOUND
 
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_when_category_does_exists_then_delete_category_and_return_204(
             self,
             category_movie: Category,

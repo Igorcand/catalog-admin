@@ -5,9 +5,9 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 from src.core.cast_member.domain.cast_member import CastMember, CastMemberType
-
+from src.django_project.cast_member_app.views import CastMemberViewSet
 from src.django_project.cast_member_app.repository import DjangoORMCastMemberRepository
-
+from unittest.mock import patch
 
 @pytest.fixture
 def actor():
@@ -33,6 +33,7 @@ def cast_member_repository() -> DjangoORMCastMemberRepository:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestListAPI:
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_list_cast_members(
         self,
         actor: CastMember,
@@ -72,6 +73,7 @@ class TestListAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestCreateAPI:
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_when_request_data_is_valid_then_create_cast_member(
         self,
         cast_member_repository: DjangoORMCastMemberRepository,
@@ -93,6 +95,7 @@ class TestCreateAPI:
             type=CastMemberType.ACTOR,
         )
 
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_when_request_data_is_invalid_then_return_400(self) -> None:
         url = reverse("cast_member-list")
         data = {
@@ -111,6 +114,7 @@ class TestCreateAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestUpdateAPI:
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_when_request_data_is_valid_then_update_cast_member(
         self,
         actor: CastMember,
@@ -131,6 +135,7 @@ class TestUpdateAPI:
         assert updated_cast_member.name == "Another Actor"
         assert updated_cast_member.type == CastMemberType.DIRECTOR
 
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_when_request_data_is_invalid_then_return_400(self) -> None:
         url = reverse("cast_member-detail", kwargs={"pk": "invalid-uuid"})
         data = {
@@ -145,6 +150,7 @@ class TestUpdateAPI:
             "type": ["This field is required."],
         }
 
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_when_cast_member_with_id_does_not_exist_then_return_404(
         self,
     ) -> None:
@@ -161,6 +167,7 @@ class TestUpdateAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestDeleteAPI:
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_when_cast_member_pk_is_invalid_then_return_400(self) -> None:
         url = reverse("cast_member-detail", kwargs={"pk": "invalid-uuid"})
         response = APIClient().delete(url)
@@ -168,12 +175,14 @@ class TestDeleteAPI:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data == {"id": ["Must be a valid UUID."]}
 
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_when_cast_member_not_found_then_return_404(self) -> None:
         url = reverse("cast_member-detail", kwargs={"pk": uuid4()})
         response = APIClient().delete(url)
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
-
+    
+    @patch.object(CastMemberViewSet, "permission_classes", [])
     def test_when_cast_member_found_then_delete_cast_member(
         self,
         actor: CastMember,

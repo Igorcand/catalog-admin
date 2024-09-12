@@ -4,7 +4,8 @@ from src.django_project.category_app.repository import DjangoORMCategoryReposito
 from src.django_project.genre_app.repository import DjangoORMGenreRepository
 from src.core.category.domain.category import Category
 from src.core.genre.domain.genre import Genre
-
+from unittest.mock import patch
+from src.django_project.genre_app.views import GenreViewSet
 import pytest 
 from uuid import uuid4, UUID
 
@@ -52,6 +53,7 @@ def genre_drama() -> Genre:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestListAPI:
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_list_genre_and_categories(
             self,
             category_movie: Category,
@@ -87,12 +89,14 @@ class TestListAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestRetrieveAPI():
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_when_id_is_invalid_return_400(self) -> None:
         url = f"/api/genres/159761298546/"
         response = APIClient().get(url)
 
         assert response.status_code == HTTP_400_BAD_REQUEST
 
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_return_genre_when_exists(
             self, 
             category_movie: Category,
@@ -114,7 +118,7 @@ class TestRetrieveAPI():
         assert response.data["data"]["is_active"] is True
         assert response.data["data"]["categories"] == []
         
-
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_return_404_when_not_exists(self):
         url = f"/api/genres/{uuid4()}/"
         response = APIClient().get(url)
@@ -124,6 +128,7 @@ class TestRetrieveAPI():
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestCreateAPI:
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_when_request_data_is_valid_then_create_genre(
             self,
             genre_romance,
@@ -160,6 +165,7 @@ class TestCreateAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestUpdateAPI:
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_when_request_data_is_valid_then_update_genre(
         self,
         category_repository: DjangoORMCategoryRepository,
@@ -184,6 +190,7 @@ class TestUpdateAPI:
         assert updated_genre.is_active is True
         assert updated_genre.categories == {category_documentary.id}
 
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_when_request_data_is_invalid_then_return_400(
         self,
         genre_drama: Genre,
@@ -199,6 +206,7 @@ class TestUpdateAPI:
         assert response.status_code == HTTP_400_BAD_REQUEST
         assert response.data == {"name": ["This field may not be blank."]}
 
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_when_related_categories_do_not_exist_then_return_400(
         self,
         category_repository: DjangoORMCategoryRepository,
@@ -220,6 +228,7 @@ class TestUpdateAPI:
         assert response.status_code == HTTP_400_BAD_REQUEST
         assert "Categories with provided IDs not found" in response.data["error"]
 
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_when_genre_does_not_exist_then_return_404(self) -> None:
         url = f"/api/genres/{str(uuid4())}/"
         data = {
@@ -234,16 +243,19 @@ class TestUpdateAPI:
 @pytest.mark.django_db
 @pytest.mark.web_service
 class TestDeleteAPI:
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_when_genre_does_not_exist_then_raise_404(self):
         url = f"/api/genres/{uuid4()}/"
         response = APIClient().delete(url)
         assert response.status_code == HTTP_404_NOT_FOUND
     
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_when_pk_is_invalid_then_raise_400(self):
         url = f"/api/genres/9348561054612806/"
         response = APIClient().delete(url)
         assert response.status_code == HTTP_400_BAD_REQUEST
     
+    @patch.object(GenreViewSet, "permission_classes", [])
     def test_delete_genre_from_repository(
             self,
             genre_repository: DjangoORMGenreRepository,
