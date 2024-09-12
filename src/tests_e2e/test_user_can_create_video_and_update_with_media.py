@@ -1,10 +1,13 @@
 import pytest 
 from rest_framework.test import APIClient
 from django.core.files.uploadedfile import SimpleUploadedFile
+from src.django_project.video_app.views import VideoViewSet
+from unittest.mock import patch
 
 @pytest.mark.django_db
 @pytest.mark.e2e
 class TestCreateVIdeoWithoutMediaAndUpdate:
+    @patch.object(VideoViewSet, "permission_classes", [])
     def test_user_can_video_without_media_and_with_no_related_entities_and_update_with_media(self) -> None:
         api_client = APIClient()
 

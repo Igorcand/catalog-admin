@@ -1,15 +1,18 @@
 import pytest 
-
 from rest_framework.test import APIClient
+from src.django_project.category_app.views import CategoryViewSet
+from unittest.mock import patch
 
 @pytest.mark.django_db
 @pytest.mark.e2e
 class TestCreateAndEditCategory:
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_user_can_create_and_edit_category(self) -> None:
         api_client = APIClient()
 
         #Verify empty database
         list_response = api_client.get("/api/categories/")
+        assert list_response.status_code == 200
         assert list_response.data == {
             "data": [],
             "meta": {
@@ -77,6 +80,7 @@ class TestCreateAndEditCategory:
             }
         }
     
+    @patch.object(CategoryViewSet, "permission_classes", [])
     def test_user_can_create_and_delete_category(self) -> None:
         api_client = APIClient()
 
