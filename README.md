@@ -304,41 +304,41 @@ Para acessar os endpoints presentes e visualizar os inputs e outputs de cada rot
 ### Configuração
 Acesse o dashboard do keycloak no endpoint "http://127.0.0.1:8080" e faça login com as credenciais: Username = admin | Password = Admin
 
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/login.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/login.png)
 
 Crie um realm para o projeto com o nome "codeflix"
 
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/realm.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/realm.png)
 
 Crie um usuário para você
 
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/create_user.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/create_user.png)
 
 Para fins de aprendizagem, pode criar com valores padrão.
 
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/user_admin.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/user_admin.png)
 
 Crie role para seu usuário
 
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/roles.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/roles.png)
 
 Crie a role "admin"
 
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/role_admin.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/role_admin.png)
 
 Vá na aba "Users" e clique no seu usuário
 
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/tab_user.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/tab_user.png)
 
 Vá na aba "Role mapping" e clique em "Assign role"
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/assign_role.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/assign_role.png)
 
 Filtre por "Filter by realm roles" e selecione a role "admin"
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/admin_role_assigned.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/admin_role_assigned.png)
 
 ### Comunicação entre Keycloak e Aplicação principal
 Vá na aba "Realm settings" -> clique no ícone "Keys" -> Clique no botão "Public key" do item "RS256" e copie a chave
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/public_key.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/public_key.png)
 
 Crie um arquivo .env 
 ```
@@ -348,10 +348,10 @@ AUTH_PUBLIC_KEY='sua_public_key'
 ### Gerar token JWT
 Para gerar o token você precisa chamar a rota "http://127.0.0.1:8080/realms/codeflix/protocol/openid-connect/token" com o método http POST, enviando no formato Form Url Encoded passando as informações 
 
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/input_token.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/input_token.png)
 
 Copie e cole o token gerado nas rotas da aplicação "catalog-admin"
-![keycloack](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloack/output_token.png)
+![keycloak](https://github.com/Igorcand/catalog-admin/blob/master/assets/keycloak/output_token.png)
 
 
 ## Como rodar esse projeto
