@@ -336,6 +336,33 @@ Para visualizar as filas vá na aba "Queues and Stream"
 
 OBS: Caso não esteja visualizando a fila "videos.new", é necessário que faça uma requisição para a rota http://localhost:8000/api/videos/{video_id}/ no método http PATCH, com o input de midia_type = "VIDEO" ou "TRAILER", porque essa rota irá disparar uma mensagem na fila e caso não exista irá criar
 
+### Fila videos.new
+O formato de envio de mensagens tem que ser na estrutura:
+
+```
+
+{   
+    "resource_id": "260310fc-53f1-4d92-8b81-81b25613537f.VIDEO", 
+    "file_path": "videos/260310fc-53f1-4d92-8b81-81b25613537f/video.mp4"
+}
+
+```
+
+### Fila videos.converted
+O formato de recebimento de mensagens tem que er na estrutura:
+
+```
+
+{
+    "error": "",
+    "video": {
+        "resource_id": "24846fe1-6218-46bb-96a8-d6d4534e0885.VIDEO",
+        "encoded_video_folder": "/path/to/encoded/video"
+    },
+    "status": "COMPLETED"
+}
+
+```
 
 ## Autenticação
 ### Configuração
