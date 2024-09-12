@@ -7,14 +7,14 @@ load_dotenv()
 
 class JwtAuthService(AuthServiceInterface):
     def __init__(self, token: str = "") -> None:
-        self.public_key = os.getenv('AUTH_PUBLIC_KEY')
-        print(f'public_key = {self.public_key}')
+        raw_public_key = os.getenv('AUTH_PUBLIC_KEY')
+        self.public_key = f"-----BEGIN PUBLIC KEY-----\n{raw_public_key}\n-----END PUBLIC KEY-----"
         self.token = token.replace("Bearer ", "", 1)
     
     def _decode_token(self):
         try:
             return jwt.decode(self.token, self.public_key, algorithms=["RS256"], audience="account")
-        except jwt.PyJWKError:
+        except:
             return {}
 
     def is_authenticated(self) -> bool:

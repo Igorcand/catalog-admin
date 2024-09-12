@@ -3,14 +3,14 @@ from src.core._shered.infrastructure.auth.jwt_auth_service import JwtAuthService
 
 class IsAuthenticated(BasePermission):
     def has_permission(self, request, view):
-        token = request.headers.get("Authentication", "")
+        token = request.headers.get("Authorization", "")
         if not JwtAuthService(token).is_authenticated():
             return False
         return True
 
 class IsAdmin(BasePermission):
     def has_permission(self, request, view):
-        token = request.headers.get("Authentication", "")
+        token = request.headers.get("Authorization", "")
         if not JwtAuthService(token).has_role("admin"):
             return False
         return True
