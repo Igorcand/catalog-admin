@@ -18,9 +18,11 @@ from uuid import UUID
 from src.core.video.application.use_cases.upload_video import UploadVideo
 from src.core._shered.infrastructure.storage.local_storage import LocalStorage
 from src.core._shered.events.message_bus import MessageBus
-
+from src.django_project.permissions import IsAdmin, IsAuthenticated
 
 class VideoViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated & IsAdmin]
+    
     def list(self, request: Request) -> Response:
         order_by = request.query_params.get("order_by", "")
         current_page = int(request.query_params.get("current_page", 1))

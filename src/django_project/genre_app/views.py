@@ -12,11 +12,13 @@ from src.core.genre.application.use_cases.exceptions import InvalidGenre, Relate
 from src.django_project.genre_app.serializers import ListOutputSerializer, CreateGenreInputSerializer, CreateGenreOutputSerializer, DeleteGenreInputSerializer, RetrieveGenreInputSerializer, RetrieveGenreOutputSerializer, UpdateGenreInputSerializer
 from src.django_project.category_app.repository import DjangoORMCategoryRepository
 from src.django_project.genre_app.repository import DjangoORMGenreRepository
-
+from src.django_project.permissions import IsAdmin, IsAuthenticated
 
 
 
 class GenreViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated & IsAdmin]
+
     def list(self, request: Request) -> Response:
         order_by = request.query_params.get("order_by", "")
         current_page = int(request.query_params.get("current_page", 1))

@@ -17,9 +17,11 @@ from src.django_project.cast_member_app.serializers import (
     ListCastMemberResponseSerializer,
     UpdateCastMemberRequestSerializer,
 )
-
+from src.django_project.permissions import IsAdmin, IsAuthenticated
 
 class CastMemberViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated & IsAdmin]
+
     def list(self, request: Request) -> Response:
         order_by = request.query_params.get("order_by", "")
         current_page = int(request.query_params.get("current_page", 1))

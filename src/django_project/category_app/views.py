@@ -4,22 +4,20 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from uuid import UUID
-
 from src.core.category.application.use_cases.list_category import ListCategoryRequest, ListCategory
 from src.core.category.application.use_cases.get_category import GetCategory, GetCategoryRequest
 from src.core.category.application.use_cases.create_category import CreateCategoryRequest, CreateCategory
 from src.core.category.application.use_cases.update_category import UpdateCategoryRequest, UpdateCategory
 from src.core.category.application.use_cases.delete_category import DeleteCategoryRequest, DeleteCategory
-
-
-
 from src.core.category.application.use_cases.exceptions import CategoryNotFound
-
 from src.django_project.category_app.serializers import ListCategoryResponseSerializer, RetrieveCategoryRequestSerializer, RetrieveCategoryResponseSerializer, CreateCategoryRequestSerializer, CreateCategoryResponseSerializer, UpdateCategoryRequestSerializer, DeleteCategoryRequestSerializer, UpdatePartialCategoryRequestSerializer
 from src.django_project.category_app.repository import DjangoORMCategoryRepository
+from src.django_project.permissions import IsAdmin, IsAuthenticated
 
 
 class CategoryViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated & IsAdmin]
+
     def list(self, request: Request) -> Response:
         order_by = request.query_params.get("order_by", "")
         current_page = int(request.query_params.get("current_page", 1))
