@@ -8,7 +8,7 @@ class RabbitMQDispatcher(EventDispatcher):
     """
     docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
     """
-    def __init__(self, host='localhost', queue="videos.new") -> None:
+    def __init__(self, host='rabbitmq', queue="videos.new") -> None:
         self.queue = queue
         self.host = host
         self.connection = None
