@@ -391,6 +391,7 @@ docker-compose up --build
 - Python
 - Django
 - Pytest
+- Docker
 
 ## Database
 - SQLite
