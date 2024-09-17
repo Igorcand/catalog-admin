@@ -164,3 +164,4 @@ cython_debug/
 .vscode/
 keycloakdb.mv.db
 keycloakdb.trace.db
+bucket-credentials.json

@@ -3,16 +3,18 @@ from django.conf import settings
 
 from google.cloud import storage
 from pathlib import Path
-
+import os
+from dotenv import load_dotenv
 from src.core._shered.infrastructure.storage.abstract_storage_service import AbstractStorageService
 
+load_dotenv()
 
 class GCSStorage(AbstractStorageService):
     def __init__(self) -> None:
         # Client vai procurar por env var GOOGLE_APPLICATION_CREDENTIALS
         # https://cloud.google.com/docs/authentication/provide-credentials-adc#how-to
         self.client = storage.Client()
-        self.bucket = self.client.bucket(settings.CLOUD_STORAGE_BUCKET_NAME)
+        self.bucket = self.client.bucket(os.getenv('CLOUD_STORAGE_BUCKET_NAME'))
 
     def store(self, file_path: Path, content: bytes, content_type: str = "") -> str:
         blob = self.bucket.blob(str(file_path))
