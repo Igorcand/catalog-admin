@@ -76,7 +76,7 @@ class VideoConvertedRabbitMQConsumer(AbstractConsumer):
         self.channel.queue_declare(queue=self.queue)
         self.channel.queue_bind(exchange="amq.direct", queue=self.queue, routing_key="jobs")
 
-        self.channel.exchange_declare(exchange="dxl", exchange_type="direct")
+        self.channel.exchange_declare(exchange="dxl", exchange_type="fanout")
         self.channel.queue_declare(queue="videos.rejected")
         self.channel.queue_bind(exchange="dxl", queue="videos.rejected")
 
